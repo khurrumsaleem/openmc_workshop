@@ -64,7 +64,9 @@ RUN pip3 install tqdm
 RUN git clone https://github.com/njoy/NJOY2016 /opt/NJOY2016 && \
     cd /opt/NJOY2016 && \
     mkdir build && cd build && \
-cmake -Dstatic=on .. && make 2>/dev/null && make install
+    cmake -Dstatic=on .. && make 2>/dev/null && make install
+
+RUN git clone https://github.com/openmc-dev/data.git
 
 # installs OpenMc from source (modified version which includes more MT numbers in the cross sections)
 # RUN git clone https://github.com/mit-crpg/openmc && \
@@ -82,7 +84,8 @@ RUN cp /openmc/bld/bin/openmc /usr/local/bin
 RUN cd openmc && python3 setup.py install
 #RUN cd openmc && pip3 install .
 
-RUN cd openmc && python3 /openmc/scripts/openmc-get-nndc-data -b
+#perhaps copy over required python scripts ace and photons
+RUN cd openmc && python3 /data/convert-nndc-data -b
 
 RUN apt-get update
 # installs the Atom text editor
