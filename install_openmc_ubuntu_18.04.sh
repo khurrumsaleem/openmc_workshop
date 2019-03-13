@@ -65,6 +65,8 @@ echo 'export PYTHONPATH=$PYTHONPATH:~/software/openmc/openmc/scripts/ ' >> ~/.ba
 PYTHONPATH=$PYTHONPATH:~/software/openmc/openmc/scripts/ 
 
 cd ~/software/openmc/data
+cp ~/software/openmc/openmc/scripts/openmc-ace-to-hdf5 .
+cp ~/software/openmc/openmc/scripts/openmc-get-photon-data .
 python3 convert_nndc71.py -b
 
 
