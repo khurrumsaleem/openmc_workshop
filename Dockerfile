@@ -23,12 +23,14 @@ ENV LC_CTYPE en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
-# Install additional packages
-
-
+# Install packages
 
 RUN apt-get --yes update && apt-get --yes upgrade
-RUN apt-get --yes install gfortran g++ cmake libhdf5-dev git
+RUN apt-get --yes install gfortran 
+RUN apt-get --yes install g++ 
+RUN apt-get --yes install cmake 
+RUN apt-get --yes install libhdf5-dev 
+RUN apt-get --yes install git
 
 RUN apt-get update
 RUN apt-get install -y python3-pip
@@ -36,6 +38,16 @@ RUN apt-get install -y python3-dev
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt-get install -y python3-tk
 
+# optional packages
+RUN apt-get --yes update
+RUN apt-get --yes install imagemagick
+RUN apt-get --yes install hdf5-tools
+RUN apt-get --yes install paraview
+RUN apt-get --yes install eog
+RUN apt-get --yes install wget
+RUN apt-get --yes install firefox
+RUN apt-get --yes install dpkg
+RUN apt-get --yes install libxkbfile1
 
 # Python Prerequisites Required
 RUN pip3 install numpy
@@ -59,6 +71,7 @@ RUN pip3 install pylint
 # Python libraries used in the workshop
 RUN pip3 install plotly
 RUN pip3 install tqdm
+RUN pip3 install ghalton
 
 # Clone and install NJOY2016
 RUN git clone https://github.com/njoy/NJOY2016 /opt/NJOY2016 && \
@@ -70,65 +83,44 @@ RUN git clone https://github.com/openmc-dev/data.git
 
 # installs OpenMc from source (modified version which includes more MT numbers in the cross sections)
 # RUN git clone https://github.com/mit-crpg/openmc && \
-RUN git clone https://github.com/Shimwell/openmc.git && \
+RUN git clone https://github.com/openmc-dev/openmc.git && \
     cd openmc && \
-    git checkout added_MT_gas_reactions_back && \
-    mkdir bld && cd bld && \
+    git checkout develop && \
+    mkdir build && cd build && \
     cmake .. -DCMAKE_INSTALL_PREFIX=.. && \
     make && \
     make install
 
-RUN PATH="$PATH:/openmc/bld/bin/"
-RUN cp /openmc/bld/bin/openmc /usr/local/bin
+RUN PATH="$PATH:/openmc/build/bin/"
+RUN cp /openmc/build/bin/openmc /usr/local/bin
 
-RUN cd openmc && python3 setup.py install
+RUN cd openmc && python3 setup.py develop
 #RUN cd openmc && pip3 install .
 
 #perhaps copy over required python scripts ace and photons
-RUN cd openmc && python3 /data/convert-nndc-data -b
+RUN cp openmc/scripts/openmc-get-photon-data data/
+RUN cp openmc/scripts/openmc-ace-to-hdf5 data/
 
-RUN apt-get update
-# installs the Atom text editor
-# RUN apt-get install -y software-properties-common
-# RUN add-apt-repository ppa:webupd8team/atom
-# RUN apt update
-# RUN apt install -y atom
+RUN python3 data/convert_nndc71.py -b
 
-RUN apt-get install -y firefox
-
-
-RUN OPENMC_CROSS_SECTIONS=/openmc/nndc_hdf5/cross_sections.xml
-
-RUN export OPENMC_CROSS_SECTIONS=/openmc/nndc_hdf5/cross_sections.xml
-
-RUN apt-get --yes update
-RUN apt-get --yes install imagemagick
-RUN apt-get --yes install hdf5-tools
-RUN apt-get --yes install paraview
-RUN apt-get --yes install eog
-RUN apt-get --yes install wget
+RUN OPENMC_CROSS_SECTIONS=/nndc_hdf5/cross_sections.xml
+RUN export OPENMC_CROSS_SECTIONS=/nndc_hdf5/cross_sections.xml
+RUN echo 'export OPENMC_CROSS_SECTIONS=/nndc_hdf5/cross_sections.xml' >> ~/.bashrc
 
 RUN echo 'alias python="python3"' >> ~/.bashrc
-
 RUN echo 'function coder() { code "$1" --user-data-dir; }' >> ~/.bashrc
 
-RUN git clone https://github.com/C-bowman/inference_tools.git
-
-RUN echo 'export PYTHONPATH=$PYTHONPATH:/inference_tools/inference' >> ~/.bashrc
-
-RUN git clone https://github.com/Shimwell/openmc_workshop.git
-
 RUN wget https://update.code.visualstudio.com/1.31.1/linux-deb-x64/stable
-
-RUN apt-get --yes install dpkg
-RUN apt-get --yes install libxkbfile1
 RUN dpkg -i stable 
 RUN apt-get --yes install -f
 
-git config --global user.email "mail@jshimwell.com"
-git config --global user.name "shimwell"
+RUN git clone https://github.com/Shimwell/openmc_workshop.git
+
+RUN git config --global user.email "mail@jshimwell.com"
+RUN git config --global user.name "shimwell"
+
+RUN git clone https://github.com/C-bowman/inference_tools.git
+RUN echo 'export PYTHONPATH=$PYTHONPATH:/inference_tools/inference' >> ~/.bashrc
 
 
-RUN pip3 install ghalton
-
-WORKDIR /openmc_workshop
+# WORKDIR /openmc_workshop
