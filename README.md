@@ -45,7 +45,7 @@ The local directory that you run docker from will be mapped to the ```/openmc_wo
 
 Please allow 20 minutes for this task.
 
-Expected outputs from this task are on [slide 5 of the presentation](https://slides.com/shimwell/neutronics_workshop/#/5)
+Expected outputs from this task are on [slide 13 of the presentation](https://slides.com/shimwell/neutronics_workshop/#/13)
 
 Knowing the interaction probabilities of the isotopes and materials within your model can help understand the simulation results. There are several online tools for plotting nuclear cross sections such as [ShimPlotWell](http://www.cross-section-plotter.com). However OpenMC is also able to plot cross sections for isotopes and materials.
 
