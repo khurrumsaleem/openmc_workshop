@@ -34,7 +34,7 @@ for isotope_name in tqdm(candiate_fusion_neutron_multipiers_list):
 
       try:
             isotope_object = openmc.data.IncidentNeutron.from_hdf5(os.path.join(nuclear_data_path,isotope_name+'.h5')) # you may have to change this directory
-            energy = isotope_object.energy['294K'] # 294K is the temperature for tendl this is 293K
+            energy = isotope_object.energy['294K'] # 294K is the temperature for endf, others use 293K
             cross_section = isotope_object[MT_number].xs['294K'](energy)
             traces.append(Scatter(x=energy,
                                   y=cross_section,
