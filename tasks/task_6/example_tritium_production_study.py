@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 import os
 from plotly.offline import download_plotlyjs, plot
 from plotly.graph_objs import Scatter, Layout
-
+from tqdm import tqdm
 
 
 def make_materials_geometry_tallies(enrichment_fraction):
@@ -42,11 +42,11 @@ def make_materials_geometry_tallies(enrichment_fraction):
 
     #GEOMETRY#
 
-    central_sol_surface = openmc.ZCylinder(R=100)
-    central_shield_outer_surface = openmc.ZCylinder(R=110)
-    vessel_inner = openmc.Sphere(R=500)
-    first_wall_outer_surface = openmc.Sphere(R=510)
-    breeder_blanket_outer_surface = openmc.Sphere(R=610,boundary_type='vacuum')
+    central_sol_surface = openmc.ZCylinder(r=100)
+    central_shield_outer_surface = openmc.ZCylinder(r=110)
+    vessel_inner = openmc.Sphere(r=500)
+    first_wall_outer_surface = openmc.Sphere(r=510)
+    breeder_blanket_outer_surface = openmc.Sphere(r=610,boundary_type='vacuum')
 
     central_sol_region = -central_sol_surface & -vessel_inner
     central_sol_cell = openmc.Cell(region=central_sol_region) 
@@ -77,7 +77,7 @@ def make_materials_geometry_tallies(enrichment_fraction):
     sett = openmc.Settings()
     batches = 3
     sett.batches = batches
-    sett.inactive = 50
+    sett.inactive = 0
     sett.particles = 5000
     sett.run_mode = 'fixed source'
 
@@ -103,16 +103,19 @@ def make_materials_geometry_tallies(enrichment_fraction):
     sp = openmc.StatePoint('statepoint.'+str(batches)+'.h5')
 
     tbr_tally = sp.get_tally(name='TBR')
-    tbr_tally_result = tbr_tally.sum[0][0][0]/batches #for some reason the tally sum is a nested list 
-    tbr_tally_std_dev = tbr_tally.std_dev[0][0][0]/batches #for some reason the tally std_dev is a nested list 
+
+    df = tbr_tally.get_pandas_dataframe()
     
+    tbr_tally_result = df['mean'].sum()
+    tbr_tally_std_dev = df['std. dev.'].sum()
+
     return {'enrichment_fraction':enrichment_fraction,
             'tbr_tally_result':tbr_tally_result, 
             'tbr_tally_std_dev':tbr_tally_std_dev}
 
 
 results=[]
-for enrichment_fraction in [0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]:
+for enrichment_fraction in tqdm([0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]):
     results.append(make_materials_geometry_tallies(enrichment_fraction))
 
 print(results)
