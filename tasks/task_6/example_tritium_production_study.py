@@ -129,7 +129,7 @@ trace1= Scatter(x=[entry['enrichment_fraction'] for entry in results],
 
 layout = {'title':'Tritium production as a function of Li6 enrichment',
           'xaxis':{'title':'Li6 enrichment fraction'},
-          'yaxis':{'title':'TBR'},
+          'yaxis':{'title':'TBR'}
          }
 plot({'data':[trace1],
       'layout':layout},
