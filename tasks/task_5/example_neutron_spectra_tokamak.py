@@ -40,11 +40,11 @@ mats = openmc.Materials([breeder_material, eurofer, copper])
 #GEOMETRY#
 
 #surfaces
-central_sol_surface = openmc.ZCylinder(R=100)
-central_shield_outer_surface = openmc.ZCylinder(R=110)
-vessel_inner = openmc.Sphere(R=500)
-first_wall_outer_surface = openmc.Sphere(R=510)
-breeder_blanket_outer_surface = openmc.Sphere(R=610,boundary_type='vacuum')
+central_sol_surface = openmc.ZCylinder(r=100)
+central_shield_outer_surface = openmc.ZCylinder(r=110)
+vessel_inner = openmc.Sphere(r=500)
+first_wall_outer_surface = openmc.Sphere(r=510)
+breeder_blanket_outer_surface = openmc.Sphere(r=610,boundary_type='vacuum')
 
 #cells
 
@@ -146,7 +146,7 @@ traces.append(Scatter(x=energy_bins,
 
 
 
-layout = {'title':'Neutron spectra 2 locations',
+layout = {'title':'Neutron energy spectra',
             'hovermode':'closest',
             'xaxis':{'title':'Energy eV',
                         'type':'linear'},
