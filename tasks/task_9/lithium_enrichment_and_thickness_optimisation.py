@@ -182,8 +182,8 @@ def make_materials_geometry_tallies(v):
     tallies_to_retrieve = ['TBR', 'DPA', 'blanket_leakage', 'vessel_leakage']
     for tally_name in tallies_to_retrieve:
         tally = sp.get_tally(name=tally_name)
-        
-        df = tbr_tally.get_pandas_dataframe()
+
+        df = tally.get_pandas_dataframe()
     
         tally_result = df['mean'].sum()
         tally_std_dev = df['std. dev.'].sum()

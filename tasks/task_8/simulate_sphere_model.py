@@ -167,7 +167,7 @@ def make_materials_geometry_tallies(batches,enrichment_fraction,inner_radius,thi
     for tally_name in tallies_to_retrieve:
         tally = sp.get_tally(name=tally_name)
 
-        df = tbr_tally.get_pandas_dataframe()
+        df = tally.get_pandas_dataframe()
     
         tally_result = df['mean'].sum()
         tally_std_dev = df['std. dev.'].sum()

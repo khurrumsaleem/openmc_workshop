@@ -45,7 +45,7 @@ def make_breeder_materials(enrichment_fraction, breeder_material_name, temperatu
     natural_breeder_material.set_density('g/cm3', density_of_natural_material_at_temperature)
     atom_densities_dict = natural_breeder_material.get_nuclide_atom_densities()
     atoms_per_barn_cm = sum([i[1] for i in atom_densities_dict.values()])
-    print('atoms_per_barn_cm',atoms_per_barn_cm)
+
     breeder_material.set_density('atom/b-cm',atoms_per_barn_cm) 
 
     return breeder_material
@@ -201,7 +201,7 @@ def make_geometry_tallies(batches,nps,enrichment_fraction,inner_radius,thickness
     for tally_name in tallies_to_retrieve:
         tally = sp.get_tally(name=tally_name)
         
-        df = tbr_tally.get_pandas_dataframe()
+        df = tally.get_pandas_dataframe()
     
         tally_result = df['mean'].sum()
         tally_std_dev = df['std. dev.'].sum()
