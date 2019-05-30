@@ -107,8 +107,8 @@ def make_materials_geometry_tallies(enrichment_fraction_list,batches = 2, inner_
     sett = openmc.Settings()
     # batches = 3 # this is parsed as an argument
     sett.batches = batches
-    sett.inactive = 10
-    sett.particles = 500
+    sett.inactive = 20
+    sett.particles = 5000
     sett.run_mode = 'fixed source'
 
     source = openmc.Source()
@@ -124,39 +124,39 @@ def make_materials_geometry_tallies(enrichment_fraction_list,batches = 2, inner_
     # define filters
     cell_filter_breeder = openmc.CellFilter(breeder_blanket_cell)
     cell_filter_vessel = openmc.CellFilter(vessel_cell)
-    particle_filter = openmc.ParticleFilter([1]) #1 is neutron, 2 is photon
+    particle_filter = openmc.ParticleFilter('neutron') #1 is neutron, 2 is photon
     surface_filter_rear_blanket = openmc.SurfaceFilter(breeder_blanket_outer_surface)
     surface_filter_rear_vessel = openmc.SurfaceFilter(vessel_outer_surface)
     energy_bins = openmc.mgxs.GROUP_STRUCTURES['VITAMIN-J-175']
     energy_filter = openmc.EnergyFilter(energy_bins)
     
     tally = openmc.Tally(name='TBR')
-    tally.filters = [cell_filter_breeder, particle_filter]
+    tally.filters = [cell_filter_breeder]
     tally.scores = ['205']
     tallies.append(tally)
 
     tally = openmc.Tally(name='blanket_leakage')
-    tally.filters = [surface_filter_rear_blanket, particle_filter]
+    tally.filters = [surface_filter_rear_blanket]
     tally.scores = ['current']
     tallies.append(tally)
 
     tally = openmc.Tally(name='vessel_leakage')
-    tally.filters = [surface_filter_rear_vessel, particle_filter]
+    tally.filters = [surface_filter_rear_vessel]
     tally.scores = ['current']
     tallies.append(tally)
 
     tally = openmc.Tally(name='breeder_blanket_spectra')
-    tally.filters = [cell_filter_breeder, particle_filter, energy_filter]
+    tally.filters = [cell_filter_breeder, energy_filter]
     tally.scores = ['flux']
     tallies.append(tally)
 
     tally = openmc.Tally(name='vacuum_vessel_spectra')
-    tally.filters = [cell_filter_vessel, particle_filter, energy_filter]
+    tally.filters = [cell_filter_vessel, energy_filter]
     tally.scores = ['flux']
     tallies.append(tally)
 
     tally = openmc.Tally(name='DPA')
-    tally.filters = [cell_filter_vessel, particle_filter]
+    tally.filters = [cell_filter_vessel]
     tally.scores = ['444']
     tallies.append(tally)
  
@@ -188,8 +188,7 @@ def make_materials_geometry_tallies(enrichment_fraction_list,batches = 2, inner_
     for spectra_name in spectra_tallies_to_retrieve:
         spectra_tally = sp.get_tally(name=spectra_name)
         spectra_tally_result = [entry[0][0] for entry in spectra_tally.mean]
-        spectra_tally_std_dev = [entry[0][0]
-                                 for entry in spectra_tally.std_dev]
+        spectra_tally_std_dev = [entry[0][0] for entry in spectra_tally.std_dev]
 
         json_output[spectra_name] = {'value': spectra_tally_result,
                                      'std_dev': spectra_tally_std_dev,
@@ -268,12 +267,12 @@ for filename_counter, coords in enumerate(x):
 
     y.append(results['TBR']['value'])
     
-    y_errors.append(results['TBR']['std_dev'] * 2)
+    y_errors.append(0.1)#results['TBR']['std_dev'] * 2)
 
     print('x from HS',x[0:filename_counter+1])
     print('y from HS',y)
     print('y_errors  from HS',y_errors)
-    print(bounds)
+    print('bounds',bounds)
     
 
     if filename_counter >0:

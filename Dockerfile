@@ -8,13 +8,13 @@ MAINTAINER Jonathan Shimwell
 # build with
 #     sudo docker build -t shimwell/openmc:latest .
 # run with
-#     docker run --net=host -it --rm -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD:/openmc_workshop/swap_space -e DISPLAY=unix$DISPLAY -e OPENMC_CROSS_SECTIONS=/openmc/nndc_hdf5/cross_sections.xml --privileged shimwell/openmc
+#     docker run --net=host -it --rm -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD:/openmc_workshop -e DISPLAY=unix$DISPLAY --privileged shimwell/openmc
 # if you have no GUI in docker try running this xhost command prior to running the image
 #     xhost local:root
 # push to docker store with
 #     docker login
 #     docker push shimwell/openmc:latest
-#
+
 RUN apt-get --yes update && apt-get --yes upgrade
 
 RUN apt-get -y install locales
@@ -23,22 +23,21 @@ ENV LC_CTYPE en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANG='en_US.UTF-8' LANGUAGE='en_US:en' LC_ALL='en_US.UTF-8'
 
-# Install packages
-
+# Install Packages Required
 RUN apt-get --yes update && apt-get --yes upgrade
 RUN apt-get --yes install gfortran 
 RUN apt-get --yes install g++ 
 RUN apt-get --yes install cmake 
 RUN apt-get --yes install libhdf5-dev 
 RUN apt-get --yes install git
-
 RUN apt-get update
 RUN apt-get install -y python3-pip
 RUN apt-get install -y python3-dev
+# RUN apt-get install -y python3-setuptools
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt-get install -y python3-tk
 
-# optional packages
+#Install Packages Optional
 RUN apt-get --yes update
 RUN apt-get --yes install imagemagick
 RUN apt-get --yes install hdf5-tools
@@ -48,6 +47,15 @@ RUN apt-get --yes install wget
 RUN apt-get --yes install firefox
 RUN apt-get --yes install dpkg
 RUN apt-get --yes install libxkbfile1
+
+#Install Packages Optional for distributed memory parallel simulations
+RUN apt install --yes mpich libmpich-dev
+RUN apt install --yes openmpi-bin libopenmpi-dev
+
+
+RUN apt-get --yes install libblas-dev 
+# RUN apt-get --yes install libatlas-dev 
+RUN apt-get --yes install liblapack-dev
 
 # Python Prerequisites Required
 RUN pip3 install numpy
@@ -73,44 +81,77 @@ RUN pip3 install plotly
 RUN pip3 install tqdm
 RUN pip3 install ghalton
 
+# Pyne requirments
+RUN pip3 install tables
+RUN pip3 install setuptools
+RUN pip3 install prettytable
+RUN pip3 install sphinxcontrib_bibtex
+RUN pip3 install numpydoc
+RUN pip3 install nbconvert
+RUN pip3 install nose
+
 # Clone and install NJOY2016
 RUN git clone https://github.com/njoy/NJOY2016 /opt/NJOY2016 && \
     cd /opt/NJOY2016 && \
     mkdir build && cd build && \
     cmake -Dstatic=on .. && make 2>/dev/null && make install
 
-RUN git clone https://github.com/openmc-dev/data.git
+RUN rm /usr/bin/python
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
-# installs OpenMc from source (modified version which includes more MT numbers in the cross sections)
-# RUN git clone https://github.com/mit-crpg/openmc && \
-RUN git clone https://github.com/openmc-dev/openmc.git && \
+# MOAB Variables
+ENV MOAB_BRANCH='Version5.1.0'
+ENV MOAB_REPO='https://bitbucket.org/fathomteam/moab/'
+ENV MOAB_INSTALL_DIR=$HOME/MOAB/
+
+# DAGMC Variables
+ENV DAGMC_BRANCH='develop'
+ENV DAGMC_REPO='https://github.com/svalinn/dagmc'
+ENV DAGMC_INSTALL_DIR=$HOME/DAGMC/
+RUN set -ex
+
+# MOAB Install
+RUN cd $HOME
+RUN mkdir MOAB && cd MOAB && \
+        git clone -b $MOAB_BRANCH $MOAB_REPO && \
+        mkdir build && cd build && \
+        cmake ../moab -DENABLE_HDF5=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=$MOAB_INSTALL_DIR && \
+        make -j && make -j test install && \
+        cmake ../moab -DBUILD_SHARED_LIBS=OFF && \
+        make -j install && \
+        rm -rf $HOME/MOAB/moab
+ENV LD_LIBRARY_PATH=$MOAB_INSTALL_DIR/lib:$LD_LIBRARY_PATH
+
+# DAGMC Install
+RUN mkdir DAGMC && cd DAGMC && \
+        git clone -b $DAGMC_BRANCH $DAGMC_REPO && \
+        mkdir build && cd build && \
+        cmake ../dagmc -DBUILD_TALLY=ON -DCMAKE_INSTALL_PREFIX=$DAGMC_INSTALL_DIR -DMOAB_DIR=$MOAB_INSTALL_DIR && \
+        make -j install && \
+        rm -rf $HOME/DAGMC/dagmc
+ENV LD_LIBRARY_PATH=$DAGMC_INSTALL_DIR/lib:$LD_LIBRARY_PATH
+
+
+# installs OpenMc from source 
+RUN git clone https://github.com/openmc-dev/openmc.git && \  
     cd openmc && \
     git checkout develop && \
     mkdir build && cd build && \
-    cmake .. -DCMAKE_INSTALL_PREFIX=.. && \
+    cmake -Ddagmc=ON -Ddebug=on .. && \
     make && \
     make install
 
 RUN PATH="$PATH:/openmc/build/bin/"
 RUN cp /openmc/build/bin/openmc /usr/local/bin
 
-RUN cd openmc && python3 setup.py develop
-#RUN cd openmc && pip3 install .
-
-#perhaps copy over required python scripts ace and photons
-RUN cp openmc/scripts/openmc-get-photon-data data/
-RUN cp openmc/scripts/openmc-ace-to-hdf5 data/
-
-RUN python3 data/convert_nndc71.py -b
-
-RUN OPENMC_CROSS_SECTIONS=/nndc_hdf5/cross_sections.xml
-RUN export OPENMC_CROSS_SECTIONS=/nndc_hdf5/cross_sections.xml
-RUN echo 'export OPENMC_CROSS_SECTIONS=/nndc_hdf5/cross_sections.xml' >> ~/.bashrc
+#this python install method allows source code changes to be trialed
+RUN cd openmc && python3 setup.py develop 
+# #RUN cd openmc && pip3 install .
 
 RUN echo 'alias python="python3"' >> ~/.bashrc
 RUN echo 'function coder() { code "$1" --user-data-dir; }' >> ~/.bashrc
 
-RUN wget https://update.code.visualstudio.com/1.31.1/linux-deb-x64/stable
+RUN wget https://update.code.visualstudio.com/1.34.0/linux-deb-x64/stable
 RUN dpkg -i stable 
 RUN apt-get --yes install -f
 
@@ -119,8 +160,24 @@ RUN git clone https://github.com/Shimwell/openmc_workshop.git
 RUN git config --global user.email "mail@jshimwell.com"
 RUN git config --global user.name "shimwell"
 
-RUN git clone https://github.com/C-bowman/inference_tools.git
-RUN echo 'export PYTHONPATH=$PYTHONPATH:/inference_tools/inference' >> ~/.bashrc
+RUN bash /openmc/tools/ci/download-xs.sh
+
+ENV OPENMC_CROSS_SECTIONS='/$HOME/nndc_hdf5/cross_sections.xml'
+WORKDIR /openmc_workshop
 
 
-# WORKDIR /openmc_workshop
+# this allows different nuclear data to be downloaded, it is not needed for the tutorial
+# RUN git clone https://github.com/openmc-dev/data.git 
+# # copy over required python scripts to the data repository
+# RUN cp openmc/scripts/openmc-get-photon-data data/
+# RUN cp openmc/scripts/openmc-ace-to-hdf5 data/
+
+# RUN python3 data/convert_nndc71.py -b
+
+# RUN OPENMC_CROSS_SECTIONS=/nndc_hdf5/cross_sections.xml
+# RUN export OPENMC_CROSS_SECTIONS=/nndc_hdf5/cross_sections.xml
+# RUN echo 'export OPENMC_CROSS_SECTIONS=/nndc_hdf5/cross_sections.xml' >> ~/.bashrc
+
+
+# RUN git clone https://github.com/C-bowman/inference_tools.git
+# RUN echo 'export PYTHONPATH=$PYTHONPATH:/inference_tools/inference' >> ~/.bashrc

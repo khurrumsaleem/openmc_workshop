@@ -12,13 +12,8 @@ import openmc.data
 from tqdm import tqdm
 import os
 
-if 'OPENMC_CROSS_SECTIONS' in os.environ:
-      nuclear_data_path = os.environ['OPENMC_CROSS_SECTIONS']
-      nuclear_data_path = os.path.dirname(nuclear_data_path)
-else:
-      nuclear_data_path ='/openmc/nndc_hdf5/cross_sections.xml' 
-      os.environ['OPENMC_CROSS_SECTIONS'] = nuclear_data_path
-      nuclear_data_path = os.path.dirname(nuclear_data_path)
+nuclear_data_path = os.path.dirname(os.environ['OPENMC_CROSS_SECTIONS'])
+
 
 print('nuclear_data_path',nuclear_data_path)
 
@@ -39,8 +34,8 @@ for isotope_name in tqdm(candiate_fusion_neutron_multipiers_list):
 
       try:
             isotope_object = openmc.data.IncidentNeutron.from_hdf5(os.path.join(nuclear_data_path,isotope_name+'.h5')) # you may have to change this directory
-            energy = isotope_object.energy['293K'] # 294K is the temperature for tendl this is 293K
-            cross_section = isotope_object[MT_number].xs['293K'](energy)
+            energy = isotope_object.energy['294K'] # 294K is the temperature for tendl this is 293K
+            cross_section = isotope_object[MT_number].xs['294K'](energy)
             traces.append(Scatter(x=energy,
                                   y=cross_section,
                                   mode = 'lines',
