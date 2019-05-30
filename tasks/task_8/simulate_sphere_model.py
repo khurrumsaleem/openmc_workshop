@@ -61,11 +61,11 @@ def make_materials_geometry_tallies(batches,enrichment_fraction,inner_radius,thi
 
     #GEOMETRY#
 
-    breeder_blanket_inner_surface = openmc.Sphere(R=inner_radius)
-    breeder_blanket_outer_surface = openmc.Sphere(R=inner_radius+thickness)
+    breeder_blanket_inner_surface = openmc.Sphere(r=inner_radius)
+    breeder_blanket_outer_surface = openmc.Sphere(r=inner_radius+thickness)
 
-    vessel_inner_surface = openmc.Sphere(R=inner_radius+thickness+10)
-    vessel_outer_surface = openmc.Sphere(R=inner_radius+thickness+20,boundary_type='vacuum')
+    vessel_inner_surface = openmc.Sphere(r=inner_radius+thickness+10)
+    vessel_outer_surface = openmc.Sphere(r=inner_radius+thickness+20,boundary_type='vacuum')
 
     breeder_blanket_region = -breeder_blanket_outer_surface & +breeder_blanket_inner_surface
     breeder_blanket_cell = openmc.Cell(region=breeder_blanket_region) 
@@ -166,10 +166,11 @@ def make_materials_geometry_tallies(batches,enrichment_fraction,inner_radius,thi
     tallies_to_retrieve = ['TBR', 'DPA', 'blanket_leakage', 'vessel_leakage']
     for tally_name in tallies_to_retrieve:
         tally = sp.get_tally(name=tally_name)
-        # for some reason the tally sum is a nested list
-        tally_result = tally.sum[0][0][0]/batches
-        # for some reason the tally std_dev is a nested list
-        tally_std_dev = tally.std_dev[0][0][0]/batches
+
+        df = tbr_tally.get_pandas_dataframe()
+    
+        tally_result = df['mean'].sum()
+        tally_std_dev = df['std. dev.'].sum()
 
         json_output[tally_name] = {'value': tally_result,
                                    'std_dev': tally_std_dev}

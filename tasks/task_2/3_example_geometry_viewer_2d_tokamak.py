@@ -30,11 +30,11 @@ mats.append(eurofer)
 
 #GEOMETRY#
 
-central_sol_surface = openmc.ZCylinder(R=100)
-central_shield_outer_surface = openmc.ZCylinder(R=110,boundary_type='vacuum')
-vessel_inner = openmc.Sphere(R=500,boundary_type='vacuum')
-first_wall_outer_surface = openmc.Sphere(R=510)
-breeder_blanket_outer_surface = openmc.Sphere(R=610)
+central_sol_surface = openmc.ZCylinder(r=100)
+central_shield_outer_surface = openmc.ZCylinder(r=110,boundary_type='vacuum')
+vessel_inner = openmc.Sphere(r=500,boundary_type='vacuum')
+first_wall_outer_surface = openmc.Sphere(r=510)
+breeder_blanket_outer_surface = openmc.Sphere(r=610)
 
 central_sol_region = -central_sol_surface & -breeder_blanket_outer_surface
 central_sol_cell = openmc.Cell(region=central_sol_region) 

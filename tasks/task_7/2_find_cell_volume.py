@@ -39,11 +39,11 @@ mats.export_to_xml()
 #GEOMETRY#
 
 #surfaces
-central_sol_surface = openmc.ZCylinder(R=100)
-central_shield_outer_surface = openmc.ZCylinder(R=110)
-vessel_inner = openmc.Sphere(R=500)
-first_wall_outer_surface = openmc.Sphere(R=510)
-breeder_blanket_outer_surface = openmc.Sphere(R=610,boundary_type='vacuum')
+central_sol_surface = openmc.ZCylinder(r=100)
+central_shield_outer_surface = openmc.ZCylinder(r=110)
+vessel_inner = openmc.Sphere(r=500)
+first_wall_outer_surface = openmc.Sphere(r=510)
+breeder_blanket_outer_surface = openmc.Sphere(r=610,boundary_type='vacuum')
 
 #cells
 
@@ -71,7 +71,7 @@ geom = openmc.Geometry(universe)
 
 geom.export_to_xml()
 
-sphere = openmc.Sphere(R=10.0)
+sphere = openmc.Sphere(r=10.0)
 cell = openmc.Cell(region=-sphere)
 vol_calc = openmc.VolumeCalculation(domains=[cell], samples=1000000)
 

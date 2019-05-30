@@ -13,8 +13,8 @@ def test_volume(uo2):
     # Create model with nested spheres
     model = openmc.model.Model()
     model.materials.append(uo2)
-    inner = openmc.Sphere(R=1.)
-    outer = openmc.Sphere(R=2., boundary_type='vacuum')
+    inner = openmc.Sphere(r=1.)
+    outer = openmc.Sphere(r=2., boundary_type='vacuum')
     c1 = openmc.Cell(fill=uo2, region=-inner)
     c2 = openmc.Cell(region=+inner & -outer)
     u = openmc.Universe(cells=[c1, c2])

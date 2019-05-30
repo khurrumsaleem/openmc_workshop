@@ -18,8 +18,8 @@ mats.export_to_xml()
 
 
 #example surfaces
-sph1 = openmc.Sphere(R=10)
-sph2 = openmc.Sphere(R=20)
+sph1 = openmc.Sphere(r=10)
+sph2 = openmc.Sphere(r=20)
 
 core_of_sphere = -sph1 # volume is below sph1
 hollow_sphere = +sph1 & -sph2 # volume is above sph1 and below sph2

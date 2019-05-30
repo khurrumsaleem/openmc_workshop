@@ -20,7 +20,7 @@ mats = openmc.Materials([])
 
 #GEOMETRY#
 
-sph1 = openmc.Sphere(R=1000, boundary_type = 'vacuum')
+sph1 = openmc.Sphere(r=1000, boundary_type = 'vacuum')
 
 simple_moderator_cell = openmc.Cell(region= -sph1 )
 

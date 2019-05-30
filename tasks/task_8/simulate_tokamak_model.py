@@ -65,12 +65,12 @@ def make_geometry_tallies(batches,nps,enrichment_fraction,inner_radius,thickness
 
     #GEOMETRY#
 
-    central_sol_surface = openmc.ZCylinder(R=100)
-    central_shield_outer_surface = openmc.ZCylinder(R=110)
-    first_wall_inner_surface = openmc.Sphere(R=inner_radius)
-    first_wall_outer_surface = openmc.Sphere(R=inner_radius+10)
-    breeder_blanket_outer_surface = openmc.Sphere(R=inner_radius+10.0+thickness)
-    vessel_outer_surface = openmc.Sphere(R=inner_radius+10.0+thickness+10.0,boundary_type='vacuum')
+    central_sol_surface = openmc.ZCylinder(r=100)
+    central_shield_outer_surface = openmc.ZCylinder(r=110)
+    first_wall_inner_surface = openmc.Sphere(r=inner_radius)
+    first_wall_outer_surface = openmc.Sphere(r=inner_radius+10)
+    breeder_blanket_outer_surface = openmc.Sphere(r=inner_radius+10.0+thickness)
+    vessel_outer_surface = openmc.Sphere(r=inner_radius+10.0+thickness+10.0,boundary_type='vacuum')
     
     central_sol_region = -central_sol_surface & -breeder_blanket_outer_surface
     central_sol_cell = openmc.Cell(region=central_sol_region) 
@@ -200,8 +200,11 @@ def make_geometry_tallies(batches,nps,enrichment_fraction,inner_radius,thickness
     tallies_to_retrieve = ['TBR', 'DPA', 'blanket_leakage', 'vessel_leakage']
     for tally_name in tallies_to_retrieve:
         tally = sp.get_tally(name=tally_name)
-        tally_result = tally.sum[0][0][0]/batches #for some reason the tally sum is a nested list 
-        tally_std_dev = tally.std_dev[0][0][0]/batches #for some reason the tally std_dev is a nested list 
+        
+        df = tbr_tally.get_pandas_dataframe()
+    
+        tally_result = df['mean'].sum()
+        tally_std_dev = df['std. dev.'].sum()
 
         json_output[tally_name] = {'value': tally_result,
                                    'std_dev':tally_std_dev}

@@ -71,11 +71,11 @@ def make_materials_geometry_tallies(enrichment_fraction_list,batches = 2, inner_
 
     #GEOMETRY#
 
-    breeder_blanket_inner_surface = openmc.Sphere(R=inner_radius)
-    breeder_blanket_outer_surface = openmc.Sphere(R=inner_radius+thickness)
+    breeder_blanket_inner_surface = openmc.Sphere(r=inner_radius)
+    breeder_blanket_outer_surface = openmc.Sphere(r=inner_radius+thickness)
 
-    vessel_inner_surface = openmc.Sphere(R=inner_radius+thickness+10)
-    vessel_outer_surface = openmc.Sphere(R=inner_radius+thickness+20,boundary_type='vacuum')
+    vessel_inner_surface = openmc.Sphere(r=inner_radius+thickness+10)
+    vessel_outer_surface = openmc.Sphere(r=inner_radius+thickness+20,boundary_type='vacuum')
 
     breeder_blanket_region = -breeder_blanket_outer_surface & +breeder_blanket_inner_surface
     breeder_blanket_cell = openmc.Cell(region=breeder_blanket_region) 
