@@ -24,8 +24,8 @@ mats.append(breeder_material)
 #GEOMETRY#
 
 
-sph1 = openmc.Sphere(R=600)
-sph2 = openmc.Sphere(R=700, boundary_type = 'vacuum')
+sph1 = openmc.Sphere(r=600)
+sph2 = openmc.Sphere(r=700, boundary_type = 'vacuum')
 sph3 = +sph1 & -sph2 
 
 breeder_blanket_cell = openmc.Cell(region=sph3)

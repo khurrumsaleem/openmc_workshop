@@ -38,11 +38,11 @@ mats = openmc.Materials([breeder_material, eurofer, copper])
 #GEOMETRY#
 
 #surfaces
-central_sol_surface = openmc.ZCylinder(R=100)
-central_shield_outer_surface = openmc.ZCylinder(R=110)
-vessel_inner_surface = openmc.Sphere(R=500)
-first_wall_outer_surface = openmc.Sphere(R=510)
-breeder_blanket_outer_surface = openmc.Sphere(R=610,boundary_type='vacuum')
+central_sol_surface = openmc.ZCylinder(r=100)
+central_shield_outer_surface = openmc.ZCylinder(r=110)
+vessel_inner_surface = openmc.Sphere(r=500)
+first_wall_outer_surface = openmc.Sphere(r=510)
+breeder_blanket_outer_surface = openmc.Sphere(r=610,boundary_type='vacuum')
 
 #cells
 
@@ -85,13 +85,12 @@ sett.run_mode = 'fixed source'
 # Create a DT point source
 source = openmc.Source()
 mcnpsource = openmc.Source()
-# source.angle = openmc.stats.Isotropic()
-# source.energy = openmc.stats.Discrete([14e6], [1])
-# source.space = openmc.stats.Point((150,0,0))
+source.angle = openmc.stats.Isotropic()
+source.energy = openmc.stats.Discrete([14e6], [1])
+source.space = openmc.stats.Point((150,0,0))
 
-source.file = 'source_7000_particles.h5' # not working with (n,t) for some reason
-
-source.module = 'source_7000_particles.cpp' # not working with (n,t) for some reason
+# source.file = 'source_7000_particles.h5' # not working with (n,t) for some reason
+# source.module = 'source_7000_particles.cpp' # not working with (n,t) for some reason
 
 sett.source = source
 
@@ -136,5 +135,4 @@ flux_slice.mean.shape = (mesh_width, mesh_height)
 fig = plt.subplot()
 plt.show(fig.imshow(flux_slice.mean))
 
-#plt.show(universe.plot(width=(1500,1500),basis='xz'))
 plt.show(universe.plot(width=(1500,1500),basis='xy'))
