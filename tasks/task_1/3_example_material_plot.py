@@ -56,7 +56,7 @@ layout = {'title':'Material cross sections',
                    #'range':(1e-10,14.1e6), 
                    'type':'log'
                   },
-          'yaxis':{'title':'Macroscopic Cross Section (1/cm2)',
+          'yaxis':{'title':'Macroscopic Cross Section (1/cm)',
                    'type':'log'
                   },
          }

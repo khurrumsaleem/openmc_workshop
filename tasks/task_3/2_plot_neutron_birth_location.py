@@ -15,9 +15,7 @@ import numpy as np
 
 #MATERIALS#
 
-
 mats = openmc.Materials([])
-
 
 
 #GEOMETRY#
@@ -52,7 +50,7 @@ source.space = openmc.stats.Point((0,0,0))
 source.angle = openmc.stats.Isotropic()
 source.energy = openmc.stats.Muir(e0=14080000.0, m_rat=5.0, kt=20000.0) #neutron energy = 14.08MeV, AMU for D + T = 5, temperature is 20KeV
 
-#sets the source position, direction and energy to be read from a file
+#sets the source position, direction and energy to be read from a file, not yet implemented
 #source.file = 'source_1000_particles.h5'
 
 sett.source = source
@@ -64,22 +62,26 @@ model.run()
 
 sp = openmc.StatePoint('statepoint.'+str(batches)+'.h5')
 
-print('energy of neutrons =',sp.source['xyz']) # these neutrons are all created
-
+print('birth location of first neutron =',sp.source['r'][0]) # these neutrons are all created
+print('direction of first neutron =',sp.source['u'][0]) # these neutrons are all created
 
 
 # plot the neutron birth locations and trajectory
 traces =[{
     'type': 'cone',
     'cauto' : False,
-    'x':sp.source['xyz'][:,0],'y':sp.source['xyz'][:,1],'z':sp.source['xyz'][:,2],
-    'u':sp.source['uvw'][:,0],'v':sp.source['uvw'][:,1],'w':sp.source['uvw'][:,2],
+    'x':sp.source['u']['x'],
+    'y':sp.source['u']['y'],
+    'z':sp.source['u']['z'],
+    'u':sp.source['u']['x'],
+    'v':sp.source['u']['y'],
+    'w':sp.source['u']['z'],
     'cmin':0,'cmax':1,
     "anchor": "tail",
     "colorscale": 'Viridis',
     "hoverinfo": "u+v+w+norm",
     "sizemode":"absolute",
-    "sizeref":3,
+    "sizeref":30,
     "showscale":False,
     }]
 
