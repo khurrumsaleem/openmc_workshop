@@ -210,7 +210,7 @@ In this task mesh tallies will be produced and visualized.
 
 The ```example_neutron_flux.py``` file contains a single material, simple hollow sphere geometry, a 14MeV point source and a mesh tally showing neutron flux. Try running this file.
 
-```Python3 example_neutron_flux.py```
+```python3 example_neutron_flux.py```
 
 You should see the isotropic point source appearing along with the simple sphere geometry. The colour map shows the neutron flux reducing as one moves away from the point source.
 
@@ -222,7 +222,7 @@ There is another example neutron flux file with the simple tokamak geometry. Tak
 
 ```coder example_neutron_flux_tokamak.py```
 
-```Python3 example_neutron_flux_tokamak.py```
+```python3 example_neutron_flux_tokamak.py```
 
 The model still has a point source but now it is located at x=150 y=0 z=0 and central column shielding is noticeable on the flux, absorption and tritium production mesh tallies.
 
@@ -248,7 +248,7 @@ Open ```example_neutron_spectra_tokamak.py``` to see how the neutron spectra is 
 
 ```coder example_neutron_spectra_tokamak.py```
 
-```Python3 example_neutron_spectra_tokamak.py```
+```python3 example_neutron_spectra_tokamak.py```
 
 - Try plotting the neutron spectra within the first wall cell on the same axis and compare it to the breeder blanket cell.
 
@@ -270,7 +270,7 @@ Open and run the ```example_tritium_production.py``` script with the following c
 
 ```coder example_tritium_production.py```
 
-```Python3 example_tritium_production.py```
+```python3 example_tritium_production.py```
 
 The example script prints the TBR and the associated error. As you can see the error is high.
 
@@ -282,7 +282,7 @@ One option for increasing the TBR is to increase the Li6 content within the blan
 
 ```coder example_tritium_production_study.py```
 
-```Python3 example_tritium_production_study.py```
+```python3 example_tritium_production_study.py```
 
 - Try changing '(n,t)' to 205 and you should get the same result as this is the equivalent  [ENDF MT reaction number](https://www.oecd-nea.org/dbdata/data/manual-endf/endf102_MT.pdf)
 
