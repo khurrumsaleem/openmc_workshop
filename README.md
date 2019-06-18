@@ -204,7 +204,7 @@ Use Paraview to load the geometry file and then open the track files (.vtp files
 
 Please allow 15 minutes for this task.
 
-Expected outputs from this task are on [slide 8 of the presentation](https://slides.com/shimwell/neutronics_workshop/#/8)
+Expected outputs from this task are on [slide 8 of the presentation](https://slides.com/shimwell/neutronics_workshop/#/16)
 
 In this task mesh tallies will be produced and visualized.
 
