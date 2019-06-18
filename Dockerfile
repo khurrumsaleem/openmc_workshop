@@ -131,6 +131,8 @@ RUN mkdir DAGMC && cd DAGMC && \
         rm -rf $HOME/DAGMC/dagmc
 ENV LD_LIBRARY_PATH=$DAGMC_INSTALL_DIR/lib:$LD_LIBRARY_PATH
 
+ENV FC=mpif90
+ENV CC=mpicc
 
 # installs OpenMc from source 
 RUN git clone https://github.com/openmc-dev/openmc.git && \  
@@ -162,7 +164,7 @@ RUN git config --global user.name "shimwell"
 
 RUN bash /openmc/tools/ci/download-xs.sh
 
-ENV OPENMC_CROSS_SECTIONS='/$HOME/nndc_hdf5/cross_sections.xml'
+ENV OPENMC_CROSS_SECTIONS='/root/nndc_hdf5/cross_sections.xml'
 WORKDIR /openmc_workshop
 
 
