@@ -37,7 +37,7 @@ sett = openmc.Settings()
 batches = 2
 sett.batches = batches
 sett.inactive = 0
-sett.particles = 1000
+sett.particles = 3000
 sett.particle = "neutron"
 sett.run_mode = 'fixed source'
 
@@ -45,12 +45,8 @@ sett.run_mode = 'fixed source'
 # creates a source object
 source = openmc.Source()
 
-#sets the source poition, direction and energy
-source.space = openmc.stats.Point((0,0,0))
-source.angle = openmc.stats.Isotropic()
-source.energy = openmc.stats.Muir(e0=14080000.0, m_rat=5.0, kt=20000.0) #neutron energy = 14.08MeV, AMU for D + T = 5, temperature is 20KeV
-
-
+#sets the source poition, direction and energy with predefined plasma parameters (see source_sampling.cpp)
+source._source_library = 'source_sampling.so'
 
 sett.source = source
 
@@ -65,13 +61,13 @@ print('birth location of first neutron =',sp.source['r'][0]) # these neutrons ar
 print('direction of first neutron =',sp.source['u'][0]) # these neutrons are all created
 
 
-# plot the neutron birth locations and trajectory using a cone plot 
+# plot the neutron birth locations and trajectory
 traces =[{
     'type': 'cone',
     'cauto' : False,
-    'x':sp.source['u']['x'], #these should really be 'r' instead of 'u' but the cone plot fails
-    'y':sp.source['u']['y'], #these should really be 'r' instead of 'u' but the cone plot fails
-    'z':sp.source['u']['z'], #these should really be 'r' instead of 'u' but the cone plot fails
+    'x':sp.source['r']['x'],
+    'y':sp.source['r']['y'],
+    'z':sp.source['r']['z'],
     'u':sp.source['u']['x'],
     'v':sp.source['u']['y'],
     'w':sp.source['u']['z'],
@@ -80,15 +76,34 @@ traces =[{
     "colorscale": 'Viridis',
     "hoverinfo": "u+v+w+norm",
     "sizemode":"absolute",
-    "sizeref":30,
+    "sizeref":3,
     "showscale":False,
     }]
-
 
 layout = {'title':'Neutron initial directions coloured by direction',
         'hovermode':'closest'}
 
 plot({'data':traces,
     'layout':layout},
-    filename='3d_plot_cones.html')
+    filename='3d_plasma_cones.html')
 
+
+traces =[{
+    'type': 'scatter3d',
+    # 'cauto' : False,
+    'x':sp.source['r']['x'],
+    'y':sp.source['r']['y'],
+    'z':sp.source['r']['z'],
+    'mode':'markers',
+    'marker':{'size':1,
+              'color':sp.source['E'],
+              'colorscale':'Viridis',
+              'colorbar':{'title':'Neutron energy in eV'}}
+    }]
+
+layout = {'title':'Neutron initial birth location coloured by energy',
+        'hovermode':'closest'}
+
+plot({'data':traces,
+    'layout':layout},
+    filename='3d_plasma_scatter.html')

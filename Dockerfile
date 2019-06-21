@@ -135,9 +135,11 @@ ENV FC=mpif90
 ENV CC=mpicc
 
 # installs OpenMc from source 
-RUN git clone https://github.com/openmc-dev/openmc.git && \  
+# RUN git clone https://github.com/openmc-dev/openmc.git && \  
+RUN git clone https://github.com/makeclean/openmc.git && \
     cd openmc && \
-    git checkout develop && \
+#     git checkout develop && \
+    git checkout dlopen_source && \
     mkdir build && cd build && \
     cmake -Ddagmc=ON -Ddebug=on .. && \
     make && \
@@ -151,21 +153,41 @@ RUN cd openmc && python3 setup.py develop
 # #RUN cd openmc && pip3 install .
 
 RUN echo 'alias python="python3"' >> ~/.bashrc
-RUN echo 'function coder() { code "$1" --user-data-dir; }' >> ~/.bashrc
 
+#installs VS code which is an IDE (Integrated development environment) for code
 RUN wget https://update.code.visualstudio.com/1.34.0/linux-deb-x64/stable
 RUN dpkg -i stable 
 RUN apt-get --yes install -f
+RUN echo 'function coder() { code "$1" --user-data-dir; }' >> ~/.bashrc
+#installs python and docker exstentions for syntax highlighting and hinting
+RUN code "$1" --user-data-dir  --install-extension ms-python.python
+RUN code "$1" --user-data-dir  --install-extension tht13.python
+RUN code "$1" --user-data-dir  --install-extension ms-azuretools.vscode-docker
 
 RUN git clone https://github.com/Shimwell/openmc_workshop.git
 
-RUN git config --global user.email "mail@jshimwell.com"
-RUN git config --global user.name "shimwell"
 
 RUN bash /openmc/tools/ci/download-xs.sh
 
 ENV OPENMC_CROSS_SECTIONS='/root/nndc_hdf5/cross_sections.xml'
 WORKDIR /openmc_workshop
+
+# this compiles the parametric plasma source
+COPY parametric_plasma_source/compile.sh parametric_plasma_source/compile.sh
+COPY parametric_plasma_source/plasma_source.hpp parametric_plasma_source/plasma_source.hpp
+COPY parametric_plasma_source/plasma_source.cpp parametric_plasma_source/plasma_source.cpp
+COPY parametric_plasma_source/source_sampling.cpp parametric_plasma_source/source_sampling.cpp
+RUN cd parametric_plasma_source && bash compile.sh
+# source_sampling.so is the compiled plasma source so this copies it to various task folders for later use
+RUN cp parametric_plasma_source/source_sampling.so tasks/task_3/source_sampling.so
+RUN cp parametric_plasma_source/source_sampling.so tasks/task_4/source_sampling.so
+RUN cp parametric_plasma_source/source_sampling.so tasks/task_5/source_sampling.so
+RUN cp parametric_plasma_source/source_sampling.so tasks/task_6/source_sampling.so
+RUN cp parametric_plasma_source/source_sampling.so tasks/task_7/source_sampling.so
+RUN cp parametric_plasma_source/source_sampling.so tasks/task_8/source_sampling.so
+
+
+
 
 
 # this allows different nuclear data to be downloaded, it is not needed for the tutorial
