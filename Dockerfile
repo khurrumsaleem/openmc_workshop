@@ -168,6 +168,8 @@ RUN echo 'function coder() { code "$1" --user-data-dir; }' >> ~/.bashrc
 RUN code "$1" --user-data-dir  --install-extension ms-python.python
 RUN code "$1" --user-data-dir  --install-extension tht13.python
 RUN code "$1" --user-data-dir  --install-extension ms-azuretools.vscode-docker
+RUN code "$1" --user-data-dir  --install-extension ms-vscode.sublime-keybindings
+
 
 
 RUN git clone https://github.com/Shimwell/openmc_workshop.git
