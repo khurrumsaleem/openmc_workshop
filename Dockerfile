@@ -154,6 +154,11 @@ RUN cd openmc && python3 setup.py develop
 
 RUN echo 'alias python="python3"' >> ~/.bashrc
 
+#downloads nuclear data including neutron and photon cross sections from nndc
+RUN bash /openmc/tools/ci/download-xs.sh
+ENV OPENMC_CROSS_SECTIONS='/root/nndc_hdf5/cross_sections.xml'
+
+
 #installs VS code which is an IDE (Integrated development environment) for code
 RUN wget https://update.code.visualstudio.com/1.34.0/linux-deb-x64/stable
 RUN dpkg -i stable 
@@ -164,20 +169,15 @@ RUN code "$1" --user-data-dir  --install-extension ms-python.python
 RUN code "$1" --user-data-dir  --install-extension tht13.python
 RUN code "$1" --user-data-dir  --install-extension ms-azuretools.vscode-docker
 
+
 RUN git clone https://github.com/Shimwell/openmc_workshop.git
 
 
-RUN bash /openmc/tools/ci/download-xs.sh
 
-ENV OPENMC_CROSS_SECTIONS='/root/nndc_hdf5/cross_sections.xml'
 WORKDIR /openmc_workshop
 
 # this compiles the parametric plasma source
-COPY parametric_plasma_source/compile.sh parametric_plasma_source/compile.sh
-COPY parametric_plasma_source/plasma_source.hpp parametric_plasma_source/plasma_source.hpp
-COPY parametric_plasma_source/plasma_source.cpp parametric_plasma_source/plasma_source.cpp
-COPY parametric_plasma_source/source_sampling.cpp parametric_plasma_source/source_sampling.cpp
-RUN cd parametric_plasma_source && bash compile.sh
+RUN cd /openmc_workshop/parametric_plasma_source && bash compile.sh
 # source_sampling.so is the compiled plasma source so this copies it to various task folders for later use
 RUN cp parametric_plasma_source/source_sampling.so tasks/task_3/source_sampling.so
 RUN cp parametric_plasma_source/source_sampling.so tasks/task_4/source_sampling.so

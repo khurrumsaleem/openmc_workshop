@@ -182,9 +182,13 @@ As you can see there is a mono-energetic energy source of 14MeV neutrons. There 
 
 In the next example the initial neutron trajectory and birth location is plotted. Again this information is accessed from the statepoint file.
 
-Run ```python3 2_plot_neutron_birth_location.py``` to produce the plot
+Run ```python3 2_plot_neutron_birth_location.py``` to produce the plot of a basic point source with the directions.
 
-The ```3_example_neutron_tracks.py``` file contains a hollow sphere made of two materials and a 14MeV point source in the centre of the geometry. The objective of this task is to create some 3D particle tracks and visualize them with the geometry.
+Now open the next example source plotting script with the command ```coder 3_plot_neutron_birth_locations_plasma.py```. Look for the part in the script where the source is defined. You should notice that an external source library is used. This is a precompiled parametric plasma source that produces neutron positions, energies and directions for a given plasma source.
+
+Run ```python3 3_plot_neutron_birth_locations_plasma.py``` to produce the plot of a more realisitc plasma neutron source point.
+
+The ```4_example_neutron_tracks.py``` file contains a hollow sphere made of two materials and a 14MeV point source in the centre of the geometry. The objective of this task is to create some 3D particle tracks and visualize them with the geometry.
 
 Open up ```coder 3_example_neutron_tracks.py``` and take a look at the ```model.run(tracks=True)``` method. This argument results in the creation of a h5 file for each neutron simulated.
 
