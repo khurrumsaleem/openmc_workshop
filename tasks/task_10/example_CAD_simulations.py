@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
-"""example_isotope_plot.py: plots few 2D views of a simple tokamak geometry with neutron flux."""
+"""example_CAD_simulation.py: uses a dagmc.h5m file for the geometry."""
 
 __author__      = "Jonathan Shimwell"
 
 import openmc
-import matplotlib.pyplot as plt
-import os
+
 
 #MATERIALS#
 
@@ -38,7 +37,7 @@ mats = openmc.Materials([breeder_material, eurofer, copper])
 #GEOMETRY#
 
 universe = openmc.Universe()
-geom = openmc.Geometry(universe)
+geom = openmc.Geometry(universe) # do i need this with DAGMC?
 
 
 
@@ -47,16 +46,16 @@ geom = openmc.Geometry(universe)
 
 # Instantiate a Settings object
 sett = openmc.Settings()
-batches = 2
+batches = 10
 sett.batches = batches
 sett.inactive = 0
-sett.particles = 50
+sett.particles = 500
 sett.run_mode = 'fixed source'
 sett.dagmc = True
 
 # Create a DT point source
 source = openmc.Source()
-source.space = openmc.stats.Point((300,0,0))
+source.space = openmc.stats.Point((0,0,0))
 source.angle = openmc.stats.Isotropic()
 source.energy = openmc.stats.Discrete([14e6], [1])
 sett.source = source
@@ -65,7 +64,7 @@ sett.source = source
 tallies = openmc.Tallies()
 
 #added a cell tally for tritium production
-cell_filter = openmc.CellFilter(1)
+cell_filter = openmc.CellFilter(1) #breeder_material is in cell number 1
 tbr_tally = openmc.Tally(2,name='TBR')
 tbr_tally.filters = [cell_filter]
 tbr_tally.scores = ['(n,t)'] #or 205

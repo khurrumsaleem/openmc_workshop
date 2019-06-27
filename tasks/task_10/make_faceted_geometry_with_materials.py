@@ -1,4 +1,9 @@
 #!/usr/env/python3
+
+#run with the following command 
+# trelis -batch -nographics make_faceted_geometry_with_materials.py 
+# trelis make_faceted_geometry_with_materials.py 
+
 import os
 import json
 
@@ -97,12 +102,18 @@ def byteify(input):
     else:
         return input
 
+def scale_geometry(geometry_details):
+  for entry in geometry_details:
+    cubit.cmd('volume ' + ' '.join(entry['volumes'] + ' scale 1000'))
+
 
 with open('geometry_details.json') as f:
     geometry_details = byteify(json.load(f))
 
 
 geometry_details = find_number_of_volumes_in_each_CAD_file(geometry_details)
+
+scale_geometry(geometry_details)
 
 graveyard_vol = create_graveyard()
 
