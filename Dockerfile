@@ -43,8 +43,9 @@ RUN apt-get install -y python3-pip
 RUN apt-get install -y python3-dev
 RUN apt-get install -y python3-setuptools
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN apt-get install -y python3-tk
 RUN apt-get install -y ipython3
+RUN apt-get update
+RUN apt-get install -y python3-tk
 
 #Install Packages Optional
 RUN apt-get --yes update
