@@ -79,8 +79,9 @@ def imprint_and_merge_geometry(tolerance='1e-4'):
     cubit.cmd('graphics tol angle 3')
 
 
-def save_output_files(graveyard_vol, tolerance='1e-2'):
+def save_output_files(graveyard_vol, tolerance='1.0'): #this tolerance should be 1e-2 for production simulations
     cubit.cmd('set attribute on')
+    # cubit.cmd('volume all scale 100')
     cubit.cmd('export dagmc "dagmc.h5m" faceting_tolerance '+tolerance)
     cubit.cmd('save as "dagmc.cub" overwrite')
     #cubit.cmd('delete Group "mat:Graveyard"') #would be tidier if these trelis allowed group commands like these without the sdk
@@ -102,9 +103,8 @@ def byteify(input):
     else:
         return input
 
-def scale_geometry(geometry_details):
-  for entry in geometry_details:
-    cubit.cmd('volume ' + ' '.join(entry['volumes'] + ' scale 1000'))
+# def scale_geometry(geometry_details):
+  
 
 
 with open('geometry_details.json') as f:
@@ -113,8 +113,7 @@ with open('geometry_details.json') as f:
 
 geometry_details = find_number_of_volumes_in_each_CAD_file(geometry_details)
 
-scale_geometry(geometry_details)
-
+# scale_geometry(geometry_details)
 graveyard_vol = create_graveyard()
 
 tag_geometry_with_mats(geometry_details)

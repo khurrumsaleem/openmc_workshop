@@ -6,9 +6,5 @@
     {
         "material": "eurofer", 
         "filename": "firstwall.stp"
-    }, 
-    {
-        "material": "magnet_material", 
-        "filename": "poloidal_magnet.stp"
     }
 ]

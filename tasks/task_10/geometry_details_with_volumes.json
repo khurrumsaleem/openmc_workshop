@@ -12,16 +12,5 @@
             "2"
         ], 
         "filename": "firstwall.stp"
-    }, 
-    {
-        "material": "magnet_material", 
-        "volumes": [
-            "3", 
-            "4", 
-            "5", 
-            "6", 
-            "7"
-        ], 
-        "filename": "poloidal_magnet.stp"
     }
 ]
