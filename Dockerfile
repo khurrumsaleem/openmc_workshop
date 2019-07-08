@@ -11,15 +11,6 @@ MAINTAINER Jonathan Shimwell
 #     docker run --net=host -it --rm -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD:/openmc_workshop -e DISPLAY=unix$DISPLAY --privileged shimwell/openmc
 # if you have no GUI in docker try running this xhost command prior to running the image
 #     xhost local:root
-# push to docker store with
-#     docker login
-#     docker push shimwell/openmc:latest# build with
-#     sudo docker build -t shimwell/freecad:latest . 
-# run with
-#     sudo docker run -it --rm -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD:/home -e DISPLAY=unix$DISPLAY --privileged shimwell/freecad
-# # if you have no GUI in docker try running this xhost command prior to running the image
-#     xhost local:root
-# 
 
 
 RUN apt-get --yes update && apt-get --yes upgrade
