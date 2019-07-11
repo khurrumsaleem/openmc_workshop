@@ -348,7 +348,9 @@ The previous task sampled from the available parameters and used a brute force m
 
 This task is not yet finished as I am having some trouble using the aqustion function with noisy data.
 
-One option for interpolating the data is a [Gaussian process tool](https://github.com/C-bowman/inference_tools/blob/master/inference/gp_tools.py)
+However if you would like to try a beta version of this code then navigate to the task_9 folder and run ```python simulate_tokamak_model.py``` 
+
+The examples uses a [Gaussian process tool](https://github.com/C-bowman/inference_tools/blob/master/inference/gp_tools.py) developed by Chris Bowman
 
 #### <a name="task10"></a>Task 10 - Using CAD geometry
 
