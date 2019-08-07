@@ -51,8 +51,38 @@ cd build
 cmake -Dstatic=on .. && make 2>/dev/null
 sudo make install
 
-RUN rm /usr/bin/python
-RUN ln -s /usr/bin/python3 /usr/bin/python
+sudo rm /usr/bin/python
+sudo ln -s /usr/bin/python3 /usr/bin/python
+
+# MOAB Variables
+MOAB_BRANCH='Version5.1.0'
+MOAB_REPO='https://bitbucket.org/fathomteam/moab/'
+MOAB_INSTALL_DIR=$HOME/MOAB/
+
+# DAGMC Variables
+DAGMC_BRANCH='develop'
+DAGMC_REPO='https://github.com/svalinn/dagmc'
+DAGMC_INSTALL_DIR=$HOME/DAGMC/
+set -ex
+
+
+# MOAB Install
+cd ~
+mkdir MOAB
+cd MOAB
+git clone -b $MOAB_BRANCH $MOAB_REPO
+mkdir build 
+cd build
+cmake ../moab -DENABLE_HDF5=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=$MOAB_INSTALL_DIR
+make
+make test Install
+cmake ../moab -DBUILD_SHARED_LIBS=OFF
+make install
+rm -rf /MOAB/moab
+#needs setting in bashrc
+LD_LIBRARY_PATH=$MOAB_INSTALL_DIR/lib:$LD_LIBRARY_PATH
+
+
 
 cd ~
 git clone https://github.com/mit-crpg/openmc 
