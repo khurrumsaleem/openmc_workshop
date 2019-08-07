@@ -6,6 +6,7 @@ sudo apt-get --yes install gfortran
 sudo apt-get --yes install g++ 
 sudo apt-get --yes install cmake 
 sudo apt-get --yes install libhdf5-dev
+
 sudo apt-get install -y python3
 sudo apt-get install -y python3-pip
 sudo apt-get install -y python3-dev
@@ -18,28 +19,28 @@ sudo apt-get --yes install eog
 sudo apt-get --yes install wget
 sudo apt-get install --yes libsilo-dev
 sudo apt-get install --yes git
-sudo apt-get install --yes python3-pip
+
 sudo apt-get --yes install dpkg
 sudo apt-get --yes install libxkbfile1
 sudo apt-get --yes install -f
 sudo apt-get install libblas-dev liblapack-dev
 
-pip3 install numpy
-pip3 install pandas
-pip3 install six
-pip3 install h5py
-pip3 install Matplotlib
-pip3 install uncertainties
-pip3 install lxml
-pip3 install scipy
-pip3 install cython
-pip3 install vtk
-pip3 install pytest
-pip3 install codecov
-pip3 install pytest-cov
-pip3 install pylint
-pip3 install plotly
-pip3 install tqdm
+pip3 install numpy --user
+pip3 install pandas --user
+pip3 install six --user
+pip3 install h5py --user
+pip3 install Matplotlib --user
+pip3 install uncertainties --user
+pip3 install lxml --user
+pip3 install scipy --user
+pip3 install cython --user
+pip3 install vtk --user
+pip3 install pytest --user
+pip3 install codecov --user
+pip3 install pytest-cov --user
+pip3 install pylint --user
+pip3 install plotly --user
+pip3 install tqdm --user
 
 mkdir software/ ; cd software ; mkdir openmc ; cd openmc
 git clone https://github.com/mit-crpg/openmc 
