@@ -12,18 +12,19 @@ sudo apt-get install -y python3-pip
 sudo apt-get install -y python3-dev
 sudo apt-get install -y python3-tk
 
-sudo apt-get --yes install imagemagick
-sudo apt-get --yes install hdf5-tools
-sudo apt-get --yes install paraview
-sudo apt-get --yes install eog
-sudo apt-get --yes install wget
+sudo apt-get install --yes imagemagick
+sudo apt-get install --yes hdf5-tools
+sudo apt-get install --yes paraview
+sudo apt-get install --yes eog
+sudo apt-get install --yes wget
 sudo apt-get install --yes libsilo-dev
 sudo apt-get install --yes git
 
 sudo apt-get --yes install dpkg
 sudo apt-get --yes install libxkbfile1
 sudo apt-get --yes install -f
-sudo apt-get install libblas-dev liblapack-dev
+sudo apt-get install libblas-dev 
+sudo apt-get install liblapack-dev
 
 pip3 install numpy --user
 pip3 install pandas --user
@@ -75,21 +76,37 @@ mkdir build
 cd build
 cmake ../moab -DENABLE_HDF5=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=$MOAB_INSTALL_DIR
 make
-make test Install
-cmake ../moab -DBUILD_SHARED_LIBS=OFF
+# make test Install
+# cmake ../moab -DBUILD_SHARED_LIBS=OFF
 make install
-rm -rf /MOAB/moab
+# rm -rf /MOAB/moab
 #needs setting in bashrc
 LD_LIBRARY_PATH=$MOAB_INSTALL_DIR/lib:$LD_LIBRARY_PATH
 
 
+# DAGMC Install
+cd ~
+mkdir DAGMC
+cd DAGMC
+git clone -b $DAGMC_BRANCH $DAGMC_REPO
+mkdir build
+cd build
+# cmake ../dagmc -DBUILD_TALLY=ON -DCMAKE_INSTALL_PREFIX=$DAGMC_INSTALL_DIR -DMOAB_DIR=$MOAB_INSTALL_DIR -DBUILD_SHARED_LIBS=OFF -DBUILD_STATIC_EXE=ON
+cmake ../dagmc -DBUILD_TALLY=ON -DCMAKE_INSTALL_PREFIX=$DAGMC_INSTALL_DIR -DMOAB_DIR=$MOAB_INSTALL_DIR 
+make install
+# rm -rf $HOME/DAGMC/dagmc
+#needs setting in bashrc
+LD_LIBRARY_PATH=$DAGMC_INSTALL_DIR/lib:$LD_LIBRARY_PATH
+
+FC=mpif90
+CC=mpicc
 
 cd ~
 git clone https://github.com/mit-crpg/openmc 
 cd openmc
 mkdir build
 cd build 
-cmake .. -DCMAKE_INSTALL_PREFIX=.. 
+cmake -Ddagmc=ON -Ddebug=on ..
 make 
 make install
 
