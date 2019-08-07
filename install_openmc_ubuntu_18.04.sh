@@ -42,10 +42,23 @@ pip3 install pylint --user
 pip3 install plotly --user
 pip3 install tqdm --user
 
-mkdir software/ ; cd software ; mkdir openmc ; cd openmc
+# Clone and install NJOY2016
+cd ~
+git clone https://github.com/njoy/NJOY2016 #/opt/NJOY2016
+cd NJOY2016
+mkdir build
+cd build
+cmake -Dstatic=on .. && make 2>/dev/null
+sudo make install
+
+RUN rm /usr/bin/python
+RUN ln -s /usr/bin/python3 /usr/bin/python
+
+cd ~
 git clone https://github.com/mit-crpg/openmc 
-cd ~/software/openmc/openmc
-mkdir build ; cd build 
+cd openmc
+mkdir build
+cd build 
 cmake .. -DCMAKE_INSTALL_PREFIX=.. 
 make 
 make install
