@@ -121,32 +121,24 @@ sudo cp ~/software/openmc/openmc/build/bin/openmc /usr/local/bin
 cd ~/openmc/ 
 sudo python3 setup.py develop
 
-cd openmc && python3 ~/software/openmc/openmc/scripts/openmc-get-nndc-data -b
+# the download script from the CI
+# /openmc/tools/ci/download-xs.sh
 
-cd ~/software/openmc/
+echo 'export PYTHONPATH=$PYTHONPATH:~/openmc/openmc/scripts/ ' >> ~/.bashrc 
+PYTHONPATH=$PYTHONPATH:~/openmc/openmc/scripts/ 
+cp ~/openmc/openmc/scripts/openmc-ace-to-hdf5 ~/data
+cp ~/openmc/openmc/scripts/openmc-get-photon-data ~/data
+
+cd ~
 git clone https://github.com/openmc-dev/data.git
 cd data
-
-echo 'export PYTHONPATH=$PYTHONPATH:~/software/openmc/openmc/scripts/ ' >> ~/.bashrc 
-PYTHONPATH=$PYTHONPATH:~/software/openmc/openmc/scripts/ 
-
-cd ~/software/openmc/data
-cp ~/software/openmc/openmc/scripts/openmc-ace-to-hdf5 .
-cp ~/software/openmc/openmc/scripts/openmc-get-photon-data .
-python3 convert_nndc71.py -b
+python3 convert_tendl.py -b
 
 
-OPENMC_CROSS_SECTIONS=/openmc/nndc_hdf5/cross_sections.xml
-echo 'export OPENMC_CROSS_SECTIONS=/openmc/nndc_hdf5/cross_sections.xml' >> ~/.bashrc 
+OPENMC_CROSS_SECTIONS_TENDL=~/data/tendl-2017-hdf5/cross_sections.xml
+OPENMC_CROSS_SECTIONS=~/data/tendl-2017-hdf5/cross_sections.xml
+echo 'export OPENMC_CROSS_SECTIONS=~/data/tendl-2017-hdf5/cross_sections.xml' >> ~/.bashrc
 
-wget https://update.code.visualstudio.com/1.31.1/linux-deb-x64/stable
-sudo dpkg -i stable 
 
-cd ~/software
-git clone https://github.com/pyne/pyne.git
-cd ~/software/pyne
-python3 setup.py install --user
 
-PATH="/home/neutronics/.local/bin:${PATH}"
-echo 'export PATH="/home/neutronics/.local/bin:${PATH}"' >> ~/.bashrc 
 
