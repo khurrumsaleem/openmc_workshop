@@ -66,6 +66,11 @@ DAGMC_REPO='https://github.com/svalinn/dagmc'
 DAGMC_INSTALL_DIR=$HOME/DAGMC/
 set -ex
 
+echo 'export MOAB_INSTALL_DIR=$HOME/MOAB/' >> ~/.bashrc 
+echo 'export DAGMC_INSTALL_DIR=$HOME/DAGMC/' >> ~/.bashrc 
+echo 'export LD_LIBRARY_PATH=$MOAB_INSTALL_DIR/lib:$LD_LIBRARY_PATH' >> ~/.bashrc 
+echo 'export LD_LIBRARY_PATH=$DAGMC_INSTALL_DIR/lib:$LD_LIBRARY_PATH' >> ~/.bashrc 
+# echo '$PATH:/openmc/build/bin/' >> ~/.bashrc 
 
 # MOAB Install
 cd ~
@@ -76,8 +81,8 @@ mkdir build
 cd build
 cmake ../moab -DENABLE_HDF5=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=$MOAB_INSTALL_DIR
 make
-# make test Install
-# cmake ../moab -DBUILD_SHARED_LIBS=OFF
+make test Install
+cmake ../moab -DBUILD_SHARED_LIBS=OFF
 make install
 # rm -rf /MOAB/moab
 #needs setting in bashrc
@@ -106,7 +111,8 @@ git clone https://github.com/mit-crpg/openmc
 cd openmc
 mkdir build
 cd build 
-cmake -Ddagmc=ON -Ddebug=on ..
+# cmake -Ddagmc=ON -Ddebug=on -DDAGMC_ROOT=  ..
+cmake -Ddagmc=ON -Ddebug=on -DDAGMC_ROOT=$DAGMC_INSTALL_DIR ..
 make 
 make install
 

@@ -1,3 +1,4 @@
+sudo docker build -t shimwell/openmc:latest .
 
 xhost local:root
 

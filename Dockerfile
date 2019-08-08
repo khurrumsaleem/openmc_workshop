@@ -120,8 +120,8 @@ RUN mkdir MOAB && cd MOAB && \
         mkdir build && cd build && \
         cmake ../moab -DENABLE_HDF5=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=$MOAB_INSTALL_DIR && \
         make && make test install && \
-        # cmake ../moab -DBUILD_SHARED_LIBS=OFF && \
-        # make install && \
+        cmake ../moab -DBUILD_SHARED_LIBS=OFF && \
+        make install && \
         rm -rf $HOME/MOAB/moab
 ENV LD_LIBRARY_PATH=$MOAB_INSTALL_DIR/lib:$LD_LIBRARY_PATH
 
