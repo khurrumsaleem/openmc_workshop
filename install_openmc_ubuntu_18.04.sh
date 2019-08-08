@@ -114,13 +114,12 @@ cd build
 # cmake -Ddagmc=ON -Ddebug=on -DDAGMC_ROOT=  ..
 cmake -Ddagmc=ON -Ddebug=on -DDAGMC_ROOT=$DAGMC_INSTALL_DIR ..
 make 
-make install
+sudo make install
 
-PATH="$PATH:~/software/openmc/openmc/build/bin/"
 sudo cp ~/software/openmc/openmc/build/bin/openmc /usr/local/bin
 
-cd ~/software/openmc/openmc/ 
-sudo python3 setup.py install
+cd ~/openmc/ 
+sudo python3 setup.py develop
 
 cd openmc && python3 ~/software/openmc/openmc/scripts/openmc-get-nndc-data -b
 
