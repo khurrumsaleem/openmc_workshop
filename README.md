@@ -164,7 +164,7 @@ Paraview should load up when this script completes. To make the geometry visible
 
 Please allow 20 minutes for this task.
 
-Expected outputs from this task are on [slide 7 of the presentation](https://slides.com/shimwell/neutronics_workshop/#/7)
+Expected outputs from this task are on [slide 7 of the presentation](https://slides.com/shimwell/neutronics_workshop/#/15)
 
 When OpenMC runs a statepoint (output) file is produced which contains information on the neutron source, tally results and additional information. This task focuses on information on extracting neutron source information from the statepoint file, while tasks 4, 5 and 6 focus on extracting other information from the statepoint file.
 
@@ -178,8 +178,6 @@ As you can see there is a mono-energetic energy source of 14MeV neutrons. There 
 - Try plotting the Watt and Muir neutron spectra and compare them to the mono energetic source.
 
 - Try changing the Muir plasma temperature from 20KeV to 40KeV.
-
-- Try
 
 
 In the next example the initial neutron trajectory and birth location is plotted. Again this information is accessed from the statepoint file.
@@ -246,7 +244,7 @@ The model still has a point source but now it is located at x=150 y=0 z=0 and ce
 
 Please allow 15 minutes for this task.
 
-Expected outputs from this task are on [slide 10 of the presentation](https://slides.com/shimwell/neutronics_workshop/#/10)
+Expected outputs from this task are on [slide 10 of the presentation](https://slides.com/shimwell/neutronics_workshop/#/18)
 
 In this task the neutron spectra at two different locations will be found and visualized.
 
@@ -268,7 +266,7 @@ Open ```example_neutron_spectra_tokamak.py``` to see how the neutron spectra is 
 
 Please allow 15 minutes for this task.
 
-Expected outputs from this task are on [slide 11 of the presentation](https://slides.com/shimwell/neutronics_workshop/#/11)
+Expected outputs from this task are on [slide 11 of the presentation](https://slides.com/shimwell/neutronics_workshop/#/19)
 
 In this task you will find the tritium breeding ratio (TBR) for a single tokamak model using ```example_tritium_production.py``` and then the TBR values for a range of tokamak models with different Li6 enrichment values with the ```example_tritium_production_study.py``` script.
 
@@ -302,7 +300,7 @@ One option for increasing the TBR is to increase the Li6 content within the blan
 
 Please allow 15 minutes for this task.
 
-Expected outputs from this task are on [slide 12 of the presentation](https://slides.com/shimwell/neutronics_workshop/#/12)
+Expected outputs from this task are on [slide 12 of the presentation](https://slides.com/shimwell/neutronics_workshop/#/20)
 
 Displacements per atom or DPA is one measure of damage within materials exposed to neutron irradiation. The MT reaction number for DPA is 444.
 
@@ -319,6 +317,8 @@ In the case of DPA a tally multiplier is needed to account for the material and 
 
 
 Please allow 25 minutes for this task.
+
+Expected outputs from this task are on [slide 12 of the presentation](https://slides.com/shimwell/neutronics_workshop/#/21)
 
 This task is more open ended and the aim is to find the minimum thickness of breeder material needed to obtain a TBR of 1.2.
 
