@@ -191,12 +191,12 @@ WORKDIR /openmc_workshop
 # this compiles the parametric plasma source
 RUN cd /openmc_workshop/parametric_plasma_source && bash compile.sh
 # source_sampling.so is the compiled plasma source so this copies it to various task folders for later use
-RUN cp parametric_plasma_source/source_sampling.so tasks/task_3/source_sampling.so
-RUN cp parametric_plasma_source/source_sampling.so tasks/task_4/source_sampling.so
-RUN cp parametric_plasma_source/source_sampling.so tasks/task_5/source_sampling.so
-RUN cp parametric_plasma_source/source_sampling.so tasks/task_6/source_sampling.so
-RUN cp parametric_plasma_source/source_sampling.so tasks/task_7/source_sampling.so
-RUN cp parametric_plasma_source/source_sampling.so tasks/task_8/source_sampling.so
+RUN cp /openmc_workshop/parametric_plasma_source/source_sampling.so /openmc_workshop/tasks/task_3
+RUN cp /openmc_workshop/parametric_plasma_source/source_sampling.so /openmc_workshop/tasks/task_4
+RUN cp /openmc_workshop/parametric_plasma_source/source_sampling.so /openmc_workshop/tasks/task_5
+RUN cp /openmc_workshop/parametric_plasma_source/source_sampling.so /openmc_workshop/tasks/task_6
+RUN cp /openmc_workshop/parametric_plasma_source/source_sampling.so /openmc_workshop/tasks/task_7
+RUN cp /openmc_workshop/parametric_plasma_source/source_sampling.so /openmc_workshop/tasks/task_8
 
 
 
