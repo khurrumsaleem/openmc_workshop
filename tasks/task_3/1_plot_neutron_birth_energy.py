@@ -57,9 +57,6 @@ source.energy = openmc.stats.Discrete([14e6], [1])
 # sets the energy of neutrons to a fusion energy distribution, energy is 14.08MeV, atomic mass for D + T = 5, temperature is 20KeV
 #source.energy = openmc.stats.Muir(e0=14080000.0, m_rat=5.0, kt=20000.0) 
 
-# sets the source position, direction and energy to be read from a file
-source.file = 'source_1000_particles.h5'
-
 sett.source = source
 
 

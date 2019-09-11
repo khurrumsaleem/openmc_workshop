@@ -11,15 +11,6 @@ MAINTAINER Jonathan Shimwell
 #     docker run --net=host -it --rm -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD:/openmc_workshop -e DISPLAY=unix$DISPLAY --privileged shimwell/openmc
 # if you have no GUI in docker try running this xhost command prior to running the image
 #     xhost local:root
-# push to docker store with
-#     docker login
-#     docker push shimwell/openmc:latest# build with
-#     sudo docker build -t shimwell/freecad:latest . 
-# run with
-#     sudo docker run -it --rm -v /tmp/.X11-unix:/tmp/.X11-unix -v $PWD:/home -e DISPLAY=unix$DISPLAY --privileged shimwell/freecad
-# # if you have no GUI in docker try running this xhost command prior to running the image
-#     xhost local:root
-# 
 
 
 RUN apt-get --yes update && apt-get --yes upgrade
@@ -43,8 +34,9 @@ RUN apt-get install -y python3-pip
 RUN apt-get install -y python3-dev
 RUN apt-get install -y python3-setuptools
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN apt-get install -y python3-tk
 RUN apt-get install -y ipython3
+RUN apt-get update
+RUN apt-get install -y python3-tk
 
 #Install Packages Optional
 RUN apt-get --yes update
@@ -199,12 +191,12 @@ WORKDIR /openmc_workshop
 # this compiles the parametric plasma source
 RUN cd /openmc_workshop/parametric_plasma_source && bash compile.sh
 # source_sampling.so is the compiled plasma source so this copies it to various task folders for later use
-RUN cp parametric_plasma_source/source_sampling.so tasks/task_3/source_sampling.so
-RUN cp parametric_plasma_source/source_sampling.so tasks/task_4/source_sampling.so
-RUN cp parametric_plasma_source/source_sampling.so tasks/task_5/source_sampling.so
-RUN cp parametric_plasma_source/source_sampling.so tasks/task_6/source_sampling.so
-RUN cp parametric_plasma_source/source_sampling.so tasks/task_7/source_sampling.so
-RUN cp parametric_plasma_source/source_sampling.so tasks/task_8/source_sampling.so
+RUN cp /openmc_workshop/parametric_plasma_source/source_sampling.so /openmc_workshop/tasks/task_3
+RUN cp /openmc_workshop/parametric_plasma_source/source_sampling.so /openmc_workshop/tasks/task_4
+RUN cp /openmc_workshop/parametric_plasma_source/source_sampling.so /openmc_workshop/tasks/task_5
+RUN cp /openmc_workshop/parametric_plasma_source/source_sampling.so /openmc_workshop/tasks/task_6
+RUN cp /openmc_workshop/parametric_plasma_source/source_sampling.so /openmc_workshop/tasks/task_7
+RUN cp /openmc_workshop/parametric_plasma_source/source_sampling.so /openmc_workshop/tasks/task_8
 
 
 

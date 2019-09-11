@@ -1,0 +1,16 @@
+[
+    {
+        "material": "breeder_material", 
+        "volumes": [
+            "1"
+        ], 
+        "filename": "blanket.stp"
+    }, 
+    {
+        "material": "eurofer", 
+        "volumes": [
+            "2"
+        ], 
+        "filename": "firstwall.stp"
+    }
+]

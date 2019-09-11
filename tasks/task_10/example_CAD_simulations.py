@@ -10,7 +10,7 @@ import openmc
 #MATERIALS#
 
 breeder_material = openmc.Material(1, "breeder_material") #Pb84.2Li15.8 with natural enrichment of Li6
-enrichment_fraction = 0.50
+enrichment_fraction = 0.90
 breeder_material.add_element('Pb', 84.2,'ao')
 breeder_material.add_nuclide('Li6', enrichment_fraction*15.8, 'ao')
 breeder_material.add_nuclide('Li7', (1.0-enrichment_fraction)*15.8, 'ao')

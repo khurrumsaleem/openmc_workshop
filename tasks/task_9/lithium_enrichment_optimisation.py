@@ -13,7 +13,7 @@ import numpy as np
 from numpy import random
 import re 
 from tqdm import tqdm
-from gp_tools import GpOptimiser
+from inference.gp_tools import GpOptimiser
 # from inference.gp_tools import GpOptimiser
 from material_maker_functions import *
 from numpy import sin, cos, linspace, array, meshgrid
