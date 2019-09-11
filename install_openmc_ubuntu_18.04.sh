@@ -85,6 +85,7 @@ cd pymoab && python3 setup.py install --user
 # rm -rf /MOAB/moab
 #needs setting in bashrc
 LD_LIBRARY_PATH=$MOAB_INSTALL_DIR/lib:$LD_LIBRARY_PATH
+echo 'export PATH=$PATH:~/MOAB/bin' >> ~/.bashrc 
 
 
 # DAGMC Install
@@ -131,6 +132,7 @@ cd ~
 git clone https://github.com/openmc-dev/data.git
 cd data
 python3 convert_tendl.py -b
+#other nuclear data libraries are available here.
 
 
 OPENMC_CROSS_SECTIONS_TENDL=~/data/tendl-2017-hdf5/cross_sections.xml
