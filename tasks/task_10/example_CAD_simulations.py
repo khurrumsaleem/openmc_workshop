@@ -68,7 +68,7 @@ tallies.append(tbr_tally)
 
 
 # Run OpenMC!
-model = openmc.model.Model(geom, mats, sett, tallies)
+model = openmc.model.Model(mats, sett, tallies)
 model.run()
 
 # open the results file
