@@ -35,11 +35,7 @@ mats = openmc.Materials([breeder_material, eurofer, copper])
 
 
 #GEOMETRY#
-
-universe = openmc.Universe()
-geom = openmc.Geometry(universe) # do i need this with DAGMC?
-
-
+# contained in dagmc.h5m file
 
 
 #SIMULATION SETTINGS#
