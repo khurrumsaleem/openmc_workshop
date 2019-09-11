@@ -15,18 +15,18 @@ os.system('rm *.jou')
 
 def find_number_of_volumes_in_each_CAD_file(input_locations, basefolder=''):
     body_ids = ''
-    volumes_in_each_step_file = []
     for entry in input_locations:
       current_vols = cubit.parse_cubit_list("volume", "all")
       print(os.path.join(basefolder, entry['filename']))
-      if entry['filename'].endswith('.sat'):
+      if entry['filename'].lower().endswith('.sat'):
         cubit.cmd('import acis "' + os.path.join(basefolder,entry['filename']) + '" separate_bodies no_surfaces no_curves no_vertices ')
-      if entry['filename'].endswith('.stp') or entry['filename'].endswith('.step'):
+      if entry['filename'].lower().endswith('.stp') or entry['filename'].lower().endswith('.step'):
         cubit.cmd('import step "' + os.path.join(basefolder,entry['filename']) + '" separate_bodies no_surfaces no_curves no_vertices ')
       short_file_name = os.path.split(entry['filename'])[-1]
       all_vols = cubit.parse_cubit_list("volume", "all")
       new_vols = set(current_vols).symmetric_difference(set(all_vols))
       new_vols = map(str, new_vols)
+      print('new_vols', new_vols)
       current_bodies = cubit.parse_cubit_list("body", "all")
       if len(new_vols) > 1:
         cubit.cmd('unite vol ' + ' '.join(new_vols) + ' with vol '+' '.join(new_vols))
@@ -36,8 +36,8 @@ def find_number_of_volumes_in_each_CAD_file(input_locations, basefolder=''):
       entry['volumes'] = new_vols_after_unite
       cubit.cmd('group "'+short_file_name + '" add volume ' + ' '.join(entry['volumes']))
     cubit.cmd('separate body all')
+    print(input_locations)
     return input_locations
-
 
 def create_graveyard():
   current_vols = cubit.parse_cubit_list("volume", "all")
@@ -65,7 +65,6 @@ def create_graveyard():
   cubit.cmd('volume '+graveyard_vol+' visibility off')
   return graveyard_vol
 
-
 def tag_geometry_with_mats(geometry_details):
     for entry in geometry_details:
        #cubit.cmd('group "'+os.path.split(entry['filename'])[-1]+'" add volume ' +' '.join(entry['volumes'])) # can be performed here or in the file loading
@@ -78,18 +77,18 @@ def imprint_and_merge_geometry(tolerance='1e-4'):
     cubit.cmd('merge vol all group_results')
     cubit.cmd('graphics tol angle 3')
 
-
-def save_output_files(graveyard_vol, tolerance='1e-2'):
+def save_output_files(graveyard_vol, tolerance='1.0'):
+    #this tolerance should be 1e-2 for production simulations
+    with open('geometry_details_with_volumes.json', 'w') as outfile:
+        json.dump(geometry_details, outfile, indent=4)
     cubit.cmd('set attribute on')
-    cubit.cmd('export dagmc "dagmc.h5m" faceting_tolerance '+tolerance)
+    # cubit.cmd('volume all scale 100')
+    cubit.cmd('export dagmc "dagmc_notwatertight.h5m" faceting_tolerance '+tolerance)
     cubit.cmd('save as "dagmc.cub" overwrite')
     #cubit.cmd('delete Group "mat:Graveyard"') #would be tidier if these trelis allowed group commands like these without the sdk
     cubit.cmd('delete volume '+graveyard_vol)
     cubit.cmd('save as "dagmc.trelis" overwrite')
-    with open('geometry_details_with_volumes.json', 'w') as outfile:
-        json.dump(geometry_details, outfile, indent=4)
-    print('DAGMC model creation complete, use dagmc.h5 in your neutronics simulation' )
-
+    print('DAGMC model creation complete, use dagmc_notwatertight.h5m in your neutronics simulation' )
 
 def byteify(input):
     if isinstance(input, dict):
@@ -102,9 +101,8 @@ def byteify(input):
     else:
         return input
 
-def scale_geometry(geometry_details):
-  for entry in geometry_details:
-    cubit.cmd('volume ' + ' '.join(entry['volumes'] + ' scale 1000'))
+# def scale_geometry(geometry_details):
+  
 
 
 with open('geometry_details.json') as f:
@@ -113,8 +111,7 @@ with open('geometry_details.json') as f:
 
 geometry_details = find_number_of_volumes_in_each_CAD_file(geometry_details)
 
-scale_geometry(geometry_details)
-
+# scale_geometry(geometry_details)
 graveyard_vol = create_graveyard()
 
 tag_geometry_with_mats(geometry_details)
