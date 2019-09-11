@@ -35,7 +35,11 @@ mats = openmc.Materials([breeder_material, eurofer, copper])
 
 
 #GEOMETRY#
-# contained in dagmc.h5m file
+
+universe = openmc.Universe()
+geom = openmc.Geometry(universe) # do i need this with DAGMC?
+
+
 
 
 #SIMULATION SETTINGS#
@@ -68,7 +72,7 @@ tallies.append(tbr_tally)
 
 
 # Run OpenMC!
-model = openmc.model.Model(mats, sett, tallies)
+model = openmc.model.Model(geom, mats, sett, tallies)
 model.run()
 
 # open the results file
