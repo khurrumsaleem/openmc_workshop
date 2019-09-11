@@ -124,8 +124,8 @@ python3 setup.py install --user
 
 echo 'export PYTHONPATH=$PYTHONPATH:~/openmc/scripts/ ' >> ~/.bashrc 
 PYTHONPATH=$PYTHONPATH:~/openmc/openmc/scripts/ 
-cp ~/openmc/openmc/scripts/openmc-ace-to-hdf5 ~/data
-cp ~/openmc/openmc/scripts/openmc-get-photon-data ~/data
+cp ~/openmc/scripts/openmc-ace-to-hdf5 ~/data
+cp ~/openmc/scripts/openmc-get-photon-data ~/data
 
 cd ~
 git clone https://github.com/openmc-dev/data.git
