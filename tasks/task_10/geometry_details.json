@@ -1,10 +1,14 @@
 [
     {
-        "material": "breeder_material", 
+        "material": "breeder_material",
         "filename": "blanket.stp"
-    }, 
+    },
     {
-        "material": "eurofer", 
+        "material": "eurofer",
         "filename": "firstwall.stp"
+    },
+    {
+        "material": "magnet_material",
+        "filename": "poloidal_magnet.stp"
     }
 ]
