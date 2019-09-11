@@ -114,15 +114,15 @@ cmake -Ddagmc=ON -Ddebug=on -DDAGMC_ROOT=$DAGMC_INSTALL_DIR ..
 make 
 sudo make install
 
-sudo cp ~/software/openmc/openmc/build/bin/openmc /usr/local/bin
+sudo cp ~/openmc/build/bin/openmc /usr/local/bin
 
 cd ~/openmc/ 
-sudo python3 setup.py develop
+python3 setup.py install --user
 
 # the download script from the CI
 # /openmc/tools/ci/download-xs.sh
 
-echo 'export PYTHONPATH=$PYTHONPATH:~/openmc/openmc/scripts/ ' >> ~/.bashrc 
+echo 'export PYTHONPATH=$PYTHONPATH:~/openmc/scripts/ ' >> ~/.bashrc 
 PYTHONPATH=$PYTHONPATH:~/openmc/openmc/scripts/ 
 cp ~/openmc/openmc/scripts/openmc-ace-to-hdf5 ~/data
 cp ~/openmc/openmc/scripts/openmc-get-photon-data ~/data
