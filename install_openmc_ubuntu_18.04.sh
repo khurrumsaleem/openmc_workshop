@@ -81,7 +81,7 @@ mkdir build
 cd build
 cmake ../moab -DENABLE_HDF5=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=$MOAB_INSTALL_DIR -DENABLE_PYMOAB=ON
 make && make test install
-cd pymoab && python3 setup.py install
+cd pymoab && python3 setup.py install --user
 # rm -rf /MOAB/moab
 #needs setting in bashrc
 LD_LIBRARY_PATH=$MOAB_INSTALL_DIR/lib:$LD_LIBRARY_PATH
