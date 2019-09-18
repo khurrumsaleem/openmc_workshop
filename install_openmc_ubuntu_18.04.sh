@@ -110,8 +110,8 @@ git clone https://github.com/mit-crpg/openmc
 cd openmc
 mkdir build
 cd build 
-# cmake -Ddagmc=ON -Ddebug=on -DDAGMC_ROOT=  ..
-cmake -Ddagmc=ON -Ddebug=on -DDAGMC_ROOT=$DAGMC_INSTALL_DIR ..
+cmake -Ddagmc=ON -DDAGMC_ROOT=$DAGMC_INSTALL_DIR ..
+# cmake -Ddagmc=ON -Ddebug=on -DDAGMC_ROOT=$DAGMC_INSTALL_DIR ..
 make 
 sudo make install
 

@@ -146,7 +146,8 @@ RUN git clone https://github.com/makeclean/openmc.git && \
 #     git checkout develop && \
     git checkout dlopen_source && \
     mkdir build && cd build && \
-    cmake -Ddagmc=ON -Ddebug=on .. && \
+    cmake -Ddagmc=ON .. && \
+#     cmake -Ddagmc=ON -Ddebug=on .. && \
     make && \
     make install
 
