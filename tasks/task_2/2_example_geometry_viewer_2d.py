@@ -52,6 +52,10 @@ plt.show(universe.plot(width=(400,400),basis='xz',colors={cell_1: 'blue'})) #hin
 plt.show(universe.plot(width=(400,400),basis='xy',colors={cell_1: 'blue'}))
 plt.show(universe.plot(width=(400,400),basis='yz',colors={cell_1: 'blue'}))
 
+universe.plot(width=(400,400),basis='xz',colors={cell_1: 'blue'}).get_figure().savefig('xz_shpere.png')
+universe.plot(width=(400,400),basis='xy',colors={cell_1: 'blue'}).get_figure().savefig('xy_shpere.png')
+universe.plot(width=(400,400),basis='yz',colors={cell_1: 'blue'}).get_figure().savefig('yz_shpere.png')
+
 geom = openmc.Geometry(universe)
 
 

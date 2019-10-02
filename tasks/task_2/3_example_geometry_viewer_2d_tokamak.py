@@ -64,3 +64,7 @@ universe = openmc.Universe(cells=[central_sol_cell, central_shield_cell ,first_w
 plt.show(universe.plot(width=(1500,1500),basis='xz'))
 plt.show(universe.plot(width=(1500,1500),basis='xy'))
 plt.show(universe.plot(width=(1500,1500),basis='yz'))
+
+universe.plot(width=(1500,1500),basis='xz').get_figure().savefig('xz_tokamak.png')
+universe.plot(width=(1500,1500),basis='xy').get_figure().savefig('xy_tokamak.png')
+universe.plot(width=(1500,1500),basis='yz').get_figure().savefig('yz_tokamak.png')
