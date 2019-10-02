@@ -35,7 +35,7 @@ The local directory that you run docker from will be mapped to the ```/openmc_wo
 - [Task 2 - Building and visualizing the model geometry](#task2)
 - [Task 3 - Visualizing neutron tracks](#task3)
 - [Task 4 - Finding the neutron flux](#task4)
-- [Task 5 - Finding the neutron spectra](#task5)
+- [Task 5 - Finding the neutron and photon spectra](#task5)
 - [Task 6 - Finding the tritium production](#task6)
 - [Task 7 - Finding the neutron damage](#task7)
 - [Task 8 - Survey breeder blanket designs for tritium production](#task8)
@@ -43,7 +43,10 @@ The local directory that you run docker from will be mapped to the ```/openmc_wo
 - [Task 10 - Using CAD geometry](#task10)
 
 
-#### <a name="task1"></a>Task 1 - Cross section plotting
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+
+### <a name="task1"></a>Task 1 - Cross section plotting
 
 Please allow 20 minutes for this task.
 
@@ -89,12 +92,13 @@ This file shows us how to plot tritium production in Li4SiO4 which is a candidat
 ```python3 3_example_material_plot.py```
 
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 
 
 
 
-
-#### <a name="task2"></a>Task 2 - Building and visualizing the model geometry.
+### <a name="task2"></a>Task 2 - Building and visualizing the model geometry.
 
 Please allow 20 minutes for this task.
 
@@ -158,9 +162,10 @@ Paraview should load up when this script completes. To make the geometry visible
 
 
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 
-
-#### <a name="task3"></a>Task 3 - Visualizing neutron tracks
+### <a name="task3"></a>Task 3 - Visualizing neutron tracks
 
 Please allow 20 minutes for this task.
 
@@ -200,11 +205,12 @@ Use Paraview to load the geometry file and then open the track files (.vtp files
 
 
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 
 
 
-
-#### <a name="task4"></a>Task 4 - Finding the neutron flux
+### <a name="task4"></a>Task 4 - Finding the neutron flux
 
 Please allow 15 minutes for this task.
 
@@ -235,12 +241,12 @@ The model still has a point source but now it is located at x=150 y=0 z=0 and ce
 
 
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 
 
 
-
-
-#### <a name="task5"></a>Task 5 - Finding the neutron spectra
+### <a name="task5"></a>Task 5 - Finding the neutron and photon spectra
 
 Please allow 15 minutes for this task.
 
@@ -248,21 +254,26 @@ Expected outputs from this task are in the [presentation](https://slides.com/shi
 
 In this task the neutron spectra at two different locations will be found and visualized.
 
-Open ```example_neutron_spectra_tokamak.py``` to see how the neutron spectra is obtained for the breeder blanket cell. Then run ```example_neutron_spectra_tokamak.py``` to plot the neutron spectra within the breeder blanket.
+Open ```1_example_neutron_spectra_tokamak.py``` to see how the neutron spectra is obtained for the breeder blanket cell. Then run ```1_example_neutron_spectra_tokamak.py``` to plot the neutron spectra within the breeder blanket.
 
-```coder example_neutron_spectra_tokamak.py```
+You might notce that OpenMC has energy group structures such as VITAMIN-J-175 and [others](https://github.com/openmc-dev/openmc/blob/develop/openmc/mgxs/__init__.py) built in which makes the energy grid easy to define.
 
-```python3 example_neutron_spectra_tokamak.py```
+```coder 1_example_neutron_spectra_tokamak.py```
+
+```python3 1_example_neutron_spectra_tokamak.py```
 
 - Try plotting the neutron spectra within the first wall cell on the same axis and compare it to the breeder blanket cell.
 
+Open ```2_example_photon_spectra_tokamak.py``` to see how the photon spectra is obtained for the breeder blanket cell. An additional setting is required to enable photon transport (wich is disabled by default). Then run ```2_example_photon_spectra_tokamak.py``` to plot the photon spectra within the breeder blanket.
 
 
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 
 
 
-#### <a name="task6"></a>Task 6 - Finding the tritium production
+### <a name="task6"></a>Task 6 - Finding the tritium production
 
 Please allow 15 minutes for this task.
 
@@ -292,11 +303,12 @@ One option for increasing the TBR is to increase the Li6 content within the blan
 
 
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 
 
 
-
-#### <a name="task7"></a>Task 7 - Finding the neutron damage
+### <a name="task7"></a>Task 7 - Finding the neutron damage
 
 Please allow 15 minutes for this task.
 
@@ -311,9 +323,10 @@ In the case of DPA a tally multiplier is needed to account for the material and 
 
 - Using this information find the DPA on the first wall for a 2GW (fusion power) reactor over a 5 year period. Does this exceed the Eurofer DPA limit of 70 DPA?
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 
-
-#### <a name="task8"></a>Task 8 - Survey breeder blanket designs for tritium production
+### <a name="task8"></a>Task 8 - Survey breeder blanket designs for tritium production
 
 
 Please allow 25 minutes for this task.
@@ -342,7 +355,12 @@ There are two scripts to help you analysis the simulation results.
 
 Ultimately you should come up with the minimal thickness needed for each candidate blanket material and the lithium 6 enrichment required at that thickness. Feel free to share simulation data with other groups and interpolate between the data points.
 
-#### <a name="task9"></a>Task 9 - Optimize a breeder blanket for tritium production
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+
+
+### <a name="task9"></a>Task 9 - Optimize a breeder blanket for tritium production
 
 The previous task sampled from the available parameters and used a brute force method of finding the optimal blanket composition. This task uses Gaussian processing to home in on the optimal solution and steer the sampling.
 
@@ -352,7 +370,12 @@ However if you would like to try a beta version of this code then navigate to th
 
 The examples uses a [Gaussian process tool](https://github.com/C-bowman/inference_tools/blob/master/inference/gp_tools.py) developed by Chris Bowman
 
-#### <a name="task10"></a>Task 10 - Using CAD geometry
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+
+
+### <a name="task10"></a>Task 10 - Using CAD geometry
 
 Constructive solid geometry (CSG) has been used in all the previous tasks. This task  task demonstrates the use of CAD geometry usage within openmc.
 
