@@ -266,6 +266,9 @@ You might notce that OpenMC has energy group structures such as VITAMIN-J-175 an
 
 Open ```2_example_photon_spectra_tokamak.py``` to see how the photon spectra is obtained for the breeder blanket cell. An additional setting is required to enable photon transport (wich is disabled by default). Then run ```2_example_photon_spectra_tokamak.py``` to plot the photon spectra within the breeder blanket.
 
+```coder 1_example_photon_spectra_tokamak.py```
+
+```python3 1_example_photon_spectra_tokamak.py```
 
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
