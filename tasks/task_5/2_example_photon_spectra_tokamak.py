@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-"""example_isotope_plot.py: plots neutron spectra."""
+"""example_isotope_plot.py: plots photon spectra."""
 
 __author__      = "Jonathan Shimwell"
 
@@ -88,27 +88,28 @@ source = openmc.Source()
 source.space = openmc.stats.Point((150,0,0))
 source.angle = openmc.stats.Isotropic()
 source.energy = openmc.stats.Discrete([14e6], [1])
-# source.file = 'source_7000_particles.h5' # not working for some reason
 sett.source = source
+sett.photon_transport = True # This line is required to switch on photons tracking
 
 #setup the tallies
 tallies = openmc.Tallies()
 
-particle_filter = openmc.ParticleFilter([1]) #1 is neutron, 2 is photon
+photon_particle_filter = openmc.ParticleFilter(['photon']) # This line adds a particle filter for photons
+neutron_particle_filter = openmc.ParticleFilter(['neutron'])
 cell_filter = openmc.CellFilter(breeder_blanket_cell)
-cell_filter_fw = openmc.CellFilter(first_wall_cell)
 energy_bins = openmc.mgxs.GROUP_STRUCTURES['VITAMIN-J-175']   
 energy_filter = openmc.EnergyFilter(energy_bins)
 
-spectra_tally = openmc.Tally(3,name='breeder_blanket_spectra')
-spectra_tally.filters = [cell_filter,particle_filter,energy_filter]
+spectra_tally = openmc.Tally(name='breeder_blanket_neutron_spectra')
+spectra_tally.filters = [cell_filter,neutron_particle_filter,energy_filter]
 spectra_tally.scores = ['flux']
 tallies.append(spectra_tally)  
 
-spectra_tally = openmc.Tally(4,name='first_wall_spectra')
-spectra_tally.filters = [cell_filter_fw,particle_filter,energy_filter]
+spectra_tally = openmc.Tally(name='breeder_blanket_photon_spectra')
+spectra_tally.filters = [cell_filter,photon_particle_filter,energy_filter]
 spectra_tally.scores = ['flux']
 tallies.append(spectra_tally)  
+
 
 
 # Run OpenMC!
@@ -119,38 +120,38 @@ model.run()
 sp = openmc.StatePoint('statepoint.'+str(batches)+'.h5')
 
 
-spectra_tally = sp.get_tally(name='breeder_blanket_spectra') # add another tally for first_wall_spectra
+spectra_tally = sp.get_tally(name='breeder_blanket_neutron_spectra') # add another tally for first_wall_spectra
 spectra_tally_result = [entry[0][0] for entry in spectra_tally.mean] 
 spectra_tally_std_dev = [entry[0][0] for entry in spectra_tally.std_dev] 
 
 traces=[]
 traces.append(Scatter(x=energy_bins, 
                       y=spectra_tally_result,
-                      name='breeder_blanket_spectra',
+                      name='breeder_blanket_neutron_spectra',
                       line=dict(shape='hv')
                      )
               )
 
 
-# spectra_tally = sp.get_tally(name='first_wall_spectra') # add another tally for first_wall_spectra
-# spectra_tally_result = [entry[0][0] for entry in spectra_tally.mean] 
-# spectra_tally_std_dev = [entry[0][0] for entry in spectra_tally.std_dev] 
+spectra_tally = sp.get_tally(name='breeder_blanket_photon_spectra') # add another tally for first_wall_spectra
+spectra_tally_result = [entry[0][0] for entry in spectra_tally.mean] 
+spectra_tally_std_dev = [entry[0][0] for entry in spectra_tally.std_dev] 
 
-# traces.append(Scatter(x=energy_bins, 
-#                       y=spectra_tally_result,
-#                       name='first_wall_spectra',
-#                       line=dict(shape='hv')
-#                      )
-#               )
-
-
+traces.append(Scatter(x=energy_bins, 
+                      y=spectra_tally_result,
+                      name='breeder_blanket_photon_spectra',
+                      line=dict(shape='hv')
+                     )
+              )
 
 
-layout = {'title':'Neutron energy spectra',
+
+
+layout = {'title':'photon energy spectra',
             'hovermode':'closest',
             'xaxis':{'title':'Energy eV',
                         'type':'linear'},
-            'yaxis':{'title':'Neutrons per cm2 per source neutron',
+            'yaxis':{'title':'photons per cm2 per source photon',
                         'type':'log'},
             }     
 
