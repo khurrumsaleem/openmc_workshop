@@ -3,6 +3,9 @@
 #include <cmath>
 #include "plasma_source.hpp"
 #include <stdlib.h>     
+#include "openmc/random_lcg.h"
+
+#define RANDOM openmc::prn()
 
 namespace plasma_source {
 
@@ -106,7 +109,9 @@ void PlasmaSource::sample_energy(const int bin_number, double random_number1, do
   double sample1 = std::sqrt(-2.0*std::log(random_number1));
   double sample2 = cos(twopi*(random_number2));
   energy_neutron = (5.59/2.35)*(ion_kt[bin_number])*sample1*sample2;
-  energy_neutron += 14.08; 
+  energy_neutron += 14.08;
+  // test energy limit
+  // if (energy_neutron < 15.5){energy_neutron = 15.5} else {}
   return;
 }
 
@@ -267,10 +272,13 @@ void PlasmaSource::isotropic_direction(const double random1,
                                          const double random2,
                                          double &u, double &v,
                                          double &w) {
-  double t = _GLIBCXX_USE_RANDOM_TR1 *2*M_PI;
-  w = (random2 - 0.5) * 2;
-  u = (1.-std::pow(u,2))*cos(t);
-  v = std::sqrt(1-std::pow(u,2))*sin(t);
+  double t = 2*M_PI*random1;
+  double p = acos(1. - 2.*random2);
+
+  u = sin(p)*cos(t);
+  v = sin(p)*sin(t);
+  w = cos(p);
+  
   return;
 }
 
