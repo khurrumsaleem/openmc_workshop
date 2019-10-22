@@ -24,8 +24,8 @@ def make_breeder_materials(enrichment_fraction, breeder_material_name, temperatu
 
     #density data from http://aries.ucsd.edu/LIB/PROPS/PANOS/matintro.html
 
-    natural_breeder_material = openmc.Material(2, "natural_breeder_material")
-    breeder_material = openmc.Material(1, "breeder_material")
+    natural_breeder_material = openmc.Material(name = "natural_breeder_material")
+    breeder_material = openmc.Material(name = "breeder_material")
 
     element_numbers = get_element_numbers(breeder_material_name)
     elements = get_elements(breeder_material_name)
