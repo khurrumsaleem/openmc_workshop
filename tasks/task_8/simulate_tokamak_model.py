@@ -129,7 +129,7 @@ def make_geometry_tallies(batches,nps,enrichment_fraction,inner_radius,thickness
 
 
     #tally filters
-    particle_filter = openmc.ParticleFilter(['neutron']) #1 is neutron, 2 is photon
+    particle_filter = openmc.ParticleFilter('neutron') #1 is neutron, 2 is photon
     cell_filter_breeder = openmc.CellFilter(breeder_blanket_cell)
     cell_filter_vessel = openmc.CellFilter(vessel_cell)
     surface_filter_front = openmc.SurfaceFilter(first_wall_inner_surface)
