@@ -11,50 +11,37 @@ from pandas.io.json import json_normalize
 import numpy as np
 
 
-
 # Materials
 
-# Beryllium9 (n,2n)
-
-beryllium9 = openmc.Material()
-beryllium9.set_density('g/cm3', 1.848)
-beryllium9.add_nuclide('Be9', 1.0)
-
-
-# Beryllium (n,2n)
-
+# Beryllium
 beryllium = openmc.Material()
 beryllium.set_density('g/cm3', 1.848)
 beryllium.add_element('Be', 1.0)
 
 
-# Uranium235 (n,fission)
-
+# Uranium-235
 uranium235 = openmc.Material()
 uranium235.set_density('g/cm3', 19.3)
 uranium235.add_nuclide('U235', 1.0)
 
 
-# Carbon - Reactor grade (n, elastic scatter)
-
+# Carbon - Reactor grade
 carbon_reactor_grade = openmc.Material()
 carbon_reactor_grade.add_element('B', 0.000001, percent_type='wo')
 carbon_reactor_grade.add_element('C', 0.999999, percent_type='wo')
 carbon_reactor_grade.set_density('g/cm3', 1.70)
 
 
-# W (n,gamma)
-
+# Tungsten
 tungsten = openmc.Material()
 tungsten.set_density('g/cm3', 19.3)
 tungsten.add_element('W', 1.0)
 
+
 Endf_MT16_number = [16]     # (n,2n)
 Endf_MT2_number = [2]       # (n, elastic scatter)
-Endf_MT18_number = [18]     # Think this is fission
-Endf_MT102_number = [102]   # Think this is n,gamma
-
-
+Endf_MT18_number = [18]     # (n,fission)
+Endf_MT102_number = [102]   # (n,gamma)
 
 
 energy_beryllium, data = openmc.calculate_cexs(beryllium, 'material', Endf_MT16_number)
@@ -68,7 +55,6 @@ cross_section_carbon = data[0]
 
 energy_tungsten, data = openmc.calculate_cexs(tungsten, 'material', Endf_MT102_number)
 cross_section_tungsten = data[0]
-
 
 
 traces = []
@@ -92,7 +78,6 @@ traces.append(Scatter(x=energy_tungsten,
                       y=cross_section_tungsten,
                       mode='lines',
                       name='Tungsten (n,gamma)'))
-
 
 
 layout1 = Layout(
