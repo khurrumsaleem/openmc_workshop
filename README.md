@@ -1,6 +1,10 @@
 # Fusion Neutronics workshop with OpenMC
 A selection of resources for learning OpenMC with particular focus on simulations relevant for fusion energy.
 
+**THIS WORKSHOP HAS BEEN MOVED TO A NEW REPOSITORY. PLEASE USE THE FOLLOWING LINK.**
+
+**NEW REPOSITORY: https://github.com/ukaea/openmc_workshop**
+
 There are a few slides introducing the workshop https://slides.com/openmc_workshop/neutronics_workshop.
 
 The use of OpenMC for neutronics analysis requires several software packages and nuclear data. These have been installed inside a Docker container.
